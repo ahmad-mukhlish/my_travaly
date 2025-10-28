@@ -41,7 +41,7 @@ class LoginController extends GetxController {
         return;
       }
 
-      // user.value = LoginUser.fromGoogleAccount(account);
+      user.value = LoginUser.fromGoogleAccount(account);
       Get.toNamed(AppRoutes.dashboard);
     } catch (error) {
       Get.snackbar(
@@ -65,7 +65,7 @@ class LoginController extends GetxController {
     }
   }
 
-  Future<OAuthCredential?> _signInWithGoogle() async {
+  Future<GoogleSignInAccount?> _signInWithGoogle() async {
     try {
       initSignIn();
       final GoogleSignInAccount googleUser = await _googleSignIn.authenticate();
@@ -91,8 +91,8 @@ class LoginController extends GetxController {
         idToken: idToken,
       );
 
-      return credential;
-
+       _auth.signInWithCredential(credential);
+      return googleUser;
     } catch (e, stacktrace) {
       if (kDebugMode) {
         print('Error signing in: $e \n $stacktrace');

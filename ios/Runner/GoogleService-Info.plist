@@ -3,9 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>888304855609-plcn4odcgv2stgkglgoreo0r50c6o6ot.apps.googleusercontent.com</string>
+	<string>888304855609-ho1a188c0iutc8ti06mu4sk5d07938tq.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.888304855609-plcn4odcgv2stgkglgoreo0r50c6o6ot</string>
+	<string>com.googleusercontent.apps.888304855609-ho1a188c0iutc8ti06mu4sk5d07938tq</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>888304855609-djtgds29j2lj5li4h10n0dj54s6kih33.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyB7ycaQHjgyiqLuuOLUufwzpxa3qmmRF-0</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.test.my.travaly.myTravaly</string>
+	<string>com.test.my.travaly.mytravalyahmad</string>
 	<key>PROJECT_ID</key>
 	<string>my-travaly-ahmad-5dcb9</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:888304855609:ios:50a66aca46c21849fdbbe8</string>
+	<string>1:888304855609:ios:a75bdd943d853badfdbbe8</string>
 </dict>
 </plist>

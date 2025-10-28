@@ -1,4 +1,4 @@
-package com.test.my.travaly.my_travaly_ahmad
+package com.test.my.travaly.mytravalyahmad
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -7,17 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:888304855609:android:5465ea9d023bac9cfdbbe8",
+        "mobilesdk_app_id": "1:888304855609:android:3a0b26bb2782a154fdbbe8",
         "android_client_info": {
-          "package_name": "com.test.my.travaly.my_travaly_ahmad"
+          "package_name": "com.test.my.travaly.mytravalyahmad"
         }
       },
       "oauth_client": [
         {
-          "client_id": "888304855609-djtgds29j2lj5li4h10n0dj54s6kih33.apps.googleusercontent.com",
+          "client_id": "888304855609-a37lhmat33kt7fd2eq86foqnsbglolan.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.test.my.travaly.my_travaly_ahmad",
+            "package_name": "com.test.my.travaly.mytravalyahmad",
             "certificate_hash": "f86b621d18fde2b3e9183950057823a53ec03f92"
           }
         },
@@ -39,10 +39,10 @@
               "client_type": 3
             },
             {
-              "client_id": "888304855609-plcn4odcgv2stgkglgoreo0r50c6o6ot.apps.googleusercontent.com",
+              "client_id": "888304855609-ho1a188c0iutc8ti06mu4sk5d07938tq.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.test.my.travaly.myTravaly"
+                "bundle_id": "com.test.my.travaly.mytravalyahmad"
               }
             }
           ]
