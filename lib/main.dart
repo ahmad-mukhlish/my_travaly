@@ -1,11 +1,18 @@
+import 'package:firebase_core/firebase_core.dart' show Firebase;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_travaly/firebase_options.dart';
 
 import 'src/features/login/bindings/login_binding.dart';
 import 'src/routes/app_pages.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 

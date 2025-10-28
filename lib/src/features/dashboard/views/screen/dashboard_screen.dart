@@ -121,7 +121,7 @@ class DashboardScreen extends GetView<DashboardController> {
               ),
               const SizedBox(height: 16),
               FilledButton.icon(
-                onPressed: controller.goToTrips,
+                onPressed: () {},
                 icon: const Icon(Icons.map_outlined),
                 label: const Text('View full itinerary'),
               ),
