@@ -15,11 +15,14 @@ class DashboardScreen extends GetView<DashboardController> {
       appBar: AppBar(
         title: const Text('Dashboard'),
         actions: [
-          IconButton(
+          Obx(() => controller.isSigningOut.value ? Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CircularProgressIndicator(),
+          ) : IconButton(
             onPressed: controller.signOut,
             icon: const Icon(Icons.logout),
             tooltip: 'Sign out',
-          ),
+          )),
         ],
       ),
       body: SafeArea(

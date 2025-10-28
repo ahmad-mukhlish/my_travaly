@@ -7,6 +7,7 @@ import '../model/dashboard_model.dart';
 
 class DashboardController extends GetxController {
   DashboardController();
+  final RxBool isSigningOut = false.obs;
 
   final LoginController loginController = Get.find<LoginController>();
 
@@ -26,7 +27,9 @@ class DashboardController extends GetxController {
   LoginUser? get user => loginController.user.value;
 
 
-  void signOut() {
-    loginController.signOut();
+  void signOut() async {
+    isSigningOut.value = true;
+    await loginController.signOut();
+    isSigningOut.value = false;
   }
 }

@@ -8,8 +8,6 @@ import 'package:my_travaly/src/routes/app_routes.dart';
 import '../model/login_model.dart';
 
 class LoginController extends GetxController {
-
-
   final GoogleSignIn _googleSignIn  = GoogleSignIn.instance;
 
   final RxBool isSigningIn = false.obs;
