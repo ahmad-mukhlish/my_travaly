@@ -68,7 +68,7 @@ class LoginController extends GetxController {
         await AuthStorageService.to.saveUser(user.value!);
       }
 
-      Get.toNamed(AppRoutes.dashboard);
+      Get.toNamed(AppRoutes.home);
     } catch (e, stacktrace) {
       if (kDebugMode) {
         print('Error sign in with google: $e \n $stacktrace');

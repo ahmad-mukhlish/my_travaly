@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:my_travaly/src/features/dashboard/views/screen/dashboard_screen.dart';
 
-
 import '../features/dashboard/bindings/dashboard_binding.dart';
 import '../features/login/bindings/login_binding.dart';
 import '../features/login/views/screen/login_screen.dart';
@@ -17,7 +16,7 @@ class AppPages {
       binding: LoginBinding(),
     ),
     GetPage<dynamic>(
-      name: AppRoutes.dashboard,
+      name: AppRoutes.home,
       page: () => const DashboardScreen(),
       binding: DashboardBinding(),
     ),

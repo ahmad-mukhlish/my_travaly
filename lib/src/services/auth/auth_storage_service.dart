@@ -21,7 +21,8 @@ class AuthStorageService extends GetxService {
 
   LoginUser? get currentUser => _storedUser.value;
 
-  String get initialPage => _storedUser.value == null ? AppRoutes.login : AppRoutes.dashboard;
+  String get initialPage =>
+      _storedUser.value == null ? AppRoutes.login : AppRoutes.home;
 
   String? get visitorToken => _storedUser.value?.visitorToken;
 

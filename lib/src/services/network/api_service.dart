@@ -1,6 +1,5 @@
 import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart' hide Response;
 
 import '../../config/environment_config.dart';
