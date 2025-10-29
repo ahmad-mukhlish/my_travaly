@@ -1,14 +1,16 @@
-import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth, GoogleAuthProvider, FirebaseAuthException, UserCredential, OAuthCredential;
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:my_travaly/src/features/login/model/device_register.dart';
 import 'package:my_travaly/src/routes/app_routes.dart';
 
 
 import '../model/login_model.dart';
 
 class LoginController extends GetxController {
-  final GoogleSignIn _googleSignIn  = GoogleSignIn.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
 
   final RxBool isSigningIn = false.obs;
   final Rxn<LoginUser> user = Rxn<LoginUser>();
@@ -16,6 +18,7 @@ class LoginController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   bool isInitialize = false;
+
   Future<void> initSignIn() async {
     if (!isInitialize) {
       await _googleSignIn.initialize(
@@ -39,7 +42,9 @@ class LoginController extends GetxController {
         return;
       }
 
-      user.value = LoginUser.fromGoogleAccount(account);
+      DeviceRegister deviceRegister = await getDeviceRegister;
+      user.value = LoginUser.create(account, deviceRegister);
+
       Get.toNamed(AppRoutes.dashboard);
     } catch (error) {
       Get.snackbar(
@@ -61,6 +66,48 @@ class LoginController extends GetxController {
         Get.offAllNamed(AppRoutes.login);
       }
     }
+  }
+
+  Future<DeviceRegister> get getDeviceRegister async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
+    if (GetPlatform.isAndroid) {
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      return DeviceRegister(
+        deviceModel: androidInfo.model,
+        deviceFingerprint: androidInfo.fingerprint,
+        deviceBrand: androidInfo.brand,
+        deviceId: androidInfo.device,
+        deviceName: androidInfo.name,
+        deviceManufacturer: androidInfo.manufacturer,
+        deviceProduct: androidInfo.product,
+        deviceSerialNumber: androidInfo.id,
+      );
+    }
+
+    if (GetPlatform.isIOS) {
+      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      return DeviceRegister(
+        deviceModel: iosInfo.model,
+        deviceFingerprint: '${iosInfo.systemName } ${iosInfo.systemVersion}'
+            .trim(),
+        deviceBrand: 'Apple',
+        deviceId: iosInfo.identifierForVendor ?? '',
+        deviceName: iosInfo.name,
+        deviceManufacturer: 'Apple',
+        deviceProduct: iosInfo.localizedModel,
+        deviceSerialNumber: iosInfo.identifierForVendor ?? '',
+      );
+    }
+
+    return DeviceRegister(deviceModel: '-',
+        deviceFingerprint: '-',
+        deviceBrand: '-',
+        deviceId: '-',
+        deviceName: '-',
+        deviceManufacturer: '-',
+        deviceProduct: '-',
+        deviceSerialNumber: '-');
   }
 
   Future<GoogleSignInAccount?> _signInWithGoogle() async {
@@ -89,7 +136,7 @@ class LoginController extends GetxController {
         idToken: idToken,
       );
 
-       _auth.signInWithCredential(credential);
+      _auth.signInWithCredential(credential);
       return googleUser;
     } catch (e, stacktrace) {
       if (kDebugMode) {
