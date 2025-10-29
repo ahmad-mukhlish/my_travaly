@@ -23,6 +23,7 @@ class HomeController extends GetxController {
   final Rx<PropertySearchType> selectedSearchType =
       PropertySearchType.city.obs;
   final RxString errorMessage = ''.obs;
+  final RxInt selectedTabIndex = 0.obs;
 
   final LoginController loginController = Get.find<LoginController>();
   final TextEditingController searchTextController =
@@ -157,6 +158,12 @@ class HomeController extends GetxController {
   void onSearchTypeChanged(PropertySearchType type) {
     selectedSearchType.value = type;
     fetchProperties();
+  }
+
+  void changeTab(int index) {
+    if (selectedTabIndex.value != index) {
+      selectedTabIndex.value = index;
+    }
   }
 
   void signOut() async {

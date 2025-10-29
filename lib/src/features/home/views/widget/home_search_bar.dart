@@ -11,17 +11,9 @@ class HomeSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Find your next stay',
-          style: theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
-        ),
         const SizedBox(height: 12),
         Obx(() {
           final placeholder =
