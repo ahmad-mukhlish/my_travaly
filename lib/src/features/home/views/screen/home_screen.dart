@@ -5,6 +5,7 @@ import '../../controllers/home_controller.dart';
 import '../widget/home_search_bar.dart';
 import '../widget/hotel_list_view.dart';
 import '../widget/user_view.dart';
+import '../../model/entity_type.dart';
 
 class HomeScreen extends GetView<HomeController> {
   const HomeScreen({super.key});
@@ -55,6 +56,8 @@ class HomeScreen extends GetView<HomeController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 16),
+            _buildEntityTypeChips(theme),
+            const SizedBox(height: 16),
             HomeSearchBar(controller: controller),
             const SizedBox(height: 16),
             Expanded(
@@ -94,5 +97,42 @@ class HomeScreen extends GetView<HomeController> {
         ),
       ),
     );
+  }
+
+  Widget _buildEntityTypeChips(ThemeData theme) {
+    return Obx(() {
+      final selected = controller.selectedEntityType.value;
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: EntityType.values.map((type) {
+            final isSelected = selected == type;
+            return Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: ChoiceChip(
+                label: Text(
+                  type.label,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: isSelected
+                        ? theme.colorScheme.onPrimary
+                        : theme.colorScheme.onSurface,
+                  ),
+                ),
+                selected: isSelected,
+                onSelected: (_) => controller.onEntityTypeSelected(type),
+                selectedColor: theme.colorScheme.primary,
+                backgroundColor: theme.colorScheme.surfaceVariant,
+                side: BorderSide(
+                  color: isSelected
+                      ? theme.colorScheme.primary
+                      : theme.dividerColor,
+                ),
+                showCheckmark: false,
+              ),
+            );
+          }).toList(),
+        ),
+      );
+    });
   }
 }

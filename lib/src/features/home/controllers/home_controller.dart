@@ -7,6 +7,7 @@ import '../../login/controllers/login_controller.dart';
 import '../../login/model/login_model.dart';
 import '../data/models/property_model.dart';
 import '../data/repositories/home_repository.dart';
+import '../model/entity_type.dart';
 import '../model/property_search_type.dart';
 import '../../search_results/models/search_results_arguments.dart';
 
@@ -23,6 +24,7 @@ class HomeController extends GetxController {
   final Rx<PropertySearchType> selectedSearchType = PropertySearchType.city.obs;
   final RxString errorMessage = ''.obs;
   final RxInt selectedTabIndex = 0.obs;
+  final Rx<EntityType> selectedEntityType = EntityType.any.obs;
 
   final LoginController loginController = Get.find<LoginController>();
   final SearchController searchController = SearchController();
@@ -41,7 +43,7 @@ class HomeController extends GetxController {
     super.onClose();
   }
 
-  Future<void> fetchProperties({String? query}) async {
+  Future<void> fetchProperties({String? query, EntityType? entityType}) async {
     final visitorToken = user?.visitorToken ?? '';
     if (visitorToken.isEmpty) {
       errorMessage.value = 'Visitor token missing. Please sign out and sign in again.';
@@ -57,6 +59,11 @@ class HomeController extends GetxController {
       searchController.text = effectiveQuery;
     }
 
+    final EntityType nextEntityType = entityType ?? selectedEntityType.value;
+    if (selectedEntityType.value != nextEntityType) {
+      selectedEntityType.value = nextEntityType;
+    }
+
     final (searchType, searchInfo) =
         _buildSearchParams(selectedSearchType.value, effectiveQuery);
 
@@ -68,6 +75,7 @@ class HomeController extends GetxController {
         visitorToken: visitorToken,
         searchType: searchType,
         searchInfo: searchInfo,
+        entityType: nextEntityType.backendValue,
       );
       properties.assignAll(fetched);
     } catch (error) {
@@ -82,8 +90,8 @@ class HomeController extends GetxController {
     PropertySearchType type,
     String query,
   ) {
-    final trimmed = query.trim();
-    if (trimmed.isEmpty) {
+    final trimmedQuery = query.trim();
+    if (trimmedQuery.isEmpty) {
       return ('byRandom', const {});
     }
 
@@ -92,32 +100,29 @@ class HomeController extends GetxController {
         return (
           'byRandom',
           {
-            'keyword': trimmed,
-            'propertyName': trimmed,
+            'keyword': trimmedQuery,
+            'propertyName': trimmedQuery,
           },
         );
       case PropertySearchType.city:
         return (
           'byCity',
           {
-            'country': '',
-            'state': '',
-            'city': trimmed,
+            'city': trimmedQuery,
           },
         );
       case PropertySearchType.state:
         return (
           'byState',
           {
-            'country': '',
-            'state': trimmed,
+            'state': trimmedQuery,
           },
         );
       case PropertySearchType.country:
         return (
           'byCountry',
           {
-            'country': trimmed,
+            'country': trimmedQuery,
           },
         );
     }
@@ -129,18 +134,26 @@ class HomeController extends GetxController {
       return;
     }
     searchQuery.value = trimmed;
-    Get.toNamed(
-      AppRoutes.searchResults,
-      arguments: SearchResultsArguments(
-        query: trimmed,
-        searchType: selectedSearchType.value,
-      ),
-    );
+    // Get.toNamed(
+    //   AppRoutes.searchResults,
+    //   arguments: SearchResultsArguments(
+    //     query: trimmed,
+    //     searchType: selectedSearchType.value,
+    //   ),
+    // );
   }
 
   void onSearchTypeChanged(PropertySearchType type) {
     selectedSearchType.value = type;
     fetchProperties();
+  }
+
+  void onEntityTypeSelected(EntityType type) {
+    if (selectedEntityType.value == type) {
+      return;
+    }
+    selectedEntityType.value = type;
+    fetchProperties(entityType: type);
   }
 
   void changeTab(int index) {
