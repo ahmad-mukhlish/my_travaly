@@ -12,30 +12,38 @@ class HomeScreen extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Obx(() {
-        final index = controller.selectedTabIndex.value;
-        if (index == 1) {
-          return _buildAccountTab(context);
-        }
-        return _buildHotelsTab(context);
-      }),
-      bottomNavigationBar: Obx(
-        () => BottomNavigationBar(
-          currentIndex: controller.selectedTabIndex.value,
-          onTap: controller.changeTab,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.hotel),
-              label: 'Hotels',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Account',
-            ),
-          ],
-        ),
+      body: _buildHomeLayout(context),
+      bottomNavigationBar: _buildBottomNavBar(),
+    );
+  }
+
+  Widget _buildBottomNavBar() {
+    return Obx(
+      () => BottomNavigationBar(
+        currentIndex: controller.selectedTabIndex.value,
+        onTap: controller.changeTab,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.hotel),
+            label: 'Hotels',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Account',
+          ),
+        ],
       ),
     );
+  }
+
+  Widget _buildHomeLayout(BuildContext context) {
+    return Obx(() {
+      final index = controller.selectedTabIndex.value;
+      if (index == 1) {
+        return _buildAccountTab(context);
+      }
+      return _buildHotelsTab(context);
+    });
   }
 
   Widget _buildHotelsTab(BuildContext context) {
@@ -132,6 +140,35 @@ class HomeScreen extends GetView<HomeController> {
             }),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _buildHomeBar extends StatelessWidget {
+  const _buildHomeBar({
+    super.key,
+    required this.controller,
+  });
+
+  final HomeController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () => BottomNavigationBar(
+        currentIndex: controller.selectedTabIndex.value,
+        onTap: controller.changeTab,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.hotel),
+            label: 'Hotels',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Account',
+          ),
+        ],
       ),
     );
   }
