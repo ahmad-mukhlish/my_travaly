@@ -16,8 +16,7 @@ class HomeSearchBar extends StatelessWidget {
       children: [
         const SizedBox(height: 12),
         Obx(() {
-          final placeholder =
-              controller.selectedSearchType.value.placeholder;
+          final placeholder = "Search hotels";
           return Row(
             children: [
               Expanded(
@@ -38,23 +37,6 @@ class HomeSearchBar extends StatelessWidget {
                   onSubmitted: controller.onSearchSubmitted,
                   textInputAction: TextInputAction.search,
                 ),
-              ),
-              const SizedBox(width: 12),
-              DropdownButton<PropertySearchType>(
-                value: controller.selectedSearchType.value,
-                onChanged: (type) {
-                  if (type != null) {
-                    controller.onSearchTypeChanged(type);
-                  }
-                },
-                items: PropertySearchType.values
-                    .map(
-                      (type) => DropdownMenuItem<PropertySearchType>(
-                        value: type,
-                        child: Text(type.label),
-                      ),
-                    )
-                    .toList(),
               ),
             ],
           );
