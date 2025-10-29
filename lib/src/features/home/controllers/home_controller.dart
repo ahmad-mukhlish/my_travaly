@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../login/controllers/login_controller.dart';
@@ -24,6 +26,7 @@ class HomeController extends GetxController {
 
   final LoginController loginController = Get.find<LoginController>();
   final SearchController searchController = SearchController();
+  Timer? _searchDebounce;
 
   LoginUser? get user => loginController.user.value;
 
@@ -36,6 +39,7 @@ class HomeController extends GetxController {
   @override
   void onClose() {
     searchController.dispose();
+    _searchDebounce?.cancel();
     super.onClose();
   }
 
@@ -124,6 +128,14 @@ class HomeController extends GetxController {
     }
   }
 
+  void onSearchChanged(String value) {
+    searchQuery.value = value;
+    _searchDebounce?.cancel();
+    _searchDebounce = Timer(const Duration(milliseconds: 500), () {
+      searchAutoComplete(searchQuery.value);
+    });
+  }
+
   void onSearchSubmitted(String value) {
     final trimmed = value.trim();
     if (trimmed.isEmpty) {
@@ -137,6 +149,12 @@ class HomeController extends GetxController {
     //     searchType: selectedSearchType.value,
     //   ),
     // );
+    Get.snackbar(
+      'Search autocomplete submit',
+      'Query: $value',
+      snackPosition: SnackPosition.TOP,
+      duration: const Duration(seconds: 2),
+    );
   }
 
   void onSearchTypeChanged(PropertySearchType type) {
@@ -150,6 +168,15 @@ class HomeController extends GetxController {
     }
     selectedEntityType.value = type;
     fetchProperties(entityType: type);
+  }
+
+  void searchAutoComplete(String query) {
+    Get.snackbar(
+      'Search autocomplete',
+      'Query: $query',
+      snackPosition: SnackPosition.TOP,
+      duration: const Duration(seconds: 2),
+    );
   }
 
   void changeTab(int index) {

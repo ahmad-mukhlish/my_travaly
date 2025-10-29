@@ -15,15 +15,13 @@ class HomeSearchBar extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 12),
-        Obx(() {
-          final placeholder = "Search hotels";
-          return Row(
+        Row(
             children: [
               Expanded(
                 child: SearchBar(
                   elevation: WidgetStateProperty.all(0),
                   controller: controller.searchController,
-                  hintText: placeholder,
+                  hintText: "Search Hotel",
                   leading: const Icon(Icons.search),
                   trailing: [
                     IconButton(
@@ -33,14 +31,14 @@ class HomeSearchBar extends StatelessWidget {
                       icon: const Icon(Icons.arrow_forward),
                     ),
                   ],
-                  onChanged: (value) => controller.searchQuery.value = value,
+                  onChanged: (value) => controller.onSearchChanged(value),
                   onSubmitted: controller.onSearchSubmitted,
                   textInputAction: TextInputAction.search,
                 ),
               ),
             ],
-          );
-        }),
+
+        ),
       ],
     );
   }
