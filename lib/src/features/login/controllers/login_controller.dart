@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:my_travaly/src/features/login/data/repositories/login_repository.dart';
 import 'package:my_travaly/src/features/login/model/device_register.dart';
 import 'package:my_travaly/src/routes/app_routes.dart';
 import 'package:my_travaly/src/services/auth/auth_storage_service.dart';
@@ -12,7 +13,12 @@ import 'package:my_travaly/src/services/auth/auth_storage_service.dart';
 import '../model/login_model.dart';
 
 class LoginController extends GetxController {
+  LoginController({LoginRepository? loginRepository})
+      : _loginRepository = loginRepository ?? Get.find<LoginRepository>();
+
   final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
+
+  final LoginRepository _loginRepository;
 
   final RxBool isSigningIn = false.obs;
   final Rxn<LoginUser> user = Rxn<LoginUser>();
@@ -51,7 +57,12 @@ class LoginController extends GetxController {
       }
 
       final DeviceRegister deviceRegister = await getDeviceRegister;
-      user.value = LoginUser.create(account, deviceRegister);
+      final registerResponse = await _loginRepository.registerDevice(deviceRegister);
+      user.value = LoginUser.create(
+        account,
+        deviceRegister,
+        visitorToken: registerResponse.visitorToken,
+      );
 
       if (user.value != null) {
         await AuthStorageService.to.saveUser(user.value!);

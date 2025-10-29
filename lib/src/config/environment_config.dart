@@ -3,7 +3,7 @@ class EnvironmentConfig {
   const EnvironmentConfig._();
 
   static const String apiBaseUrl =
-      String.fromEnvironment('API_BASE_URL', defaultValue: '');
+      String.fromEnvironment('API_BASE_URL', defaultValue: 'https://api.mytravaly.com/public/v1/');
 
   /// Authentication token supplied at build time.
   static const String authToken =

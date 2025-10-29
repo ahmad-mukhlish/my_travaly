@@ -6,6 +6,7 @@ class LoginUser {
     required this.id,
     required this.displayName,
     required this.email,
+    this.visitorToken,
     this.deviceRegister,
     this.photoUrl,
   });
@@ -13,15 +14,21 @@ class LoginUser {
   final String id;
   final String displayName;
   final String email;
+  final String? visitorToken;
   final String? photoUrl;
   final DeviceRegister? deviceRegister;
 
-  factory LoginUser.create(GoogleSignInAccount account, DeviceRegister? deviceRegister) {
+  factory LoginUser.create(
+    GoogleSignInAccount account,
+    DeviceRegister? deviceRegister, {
+    String? visitorToken,
+  }) {
     return LoginUser(
       id: account.id,
       displayName: account.displayName ?? account.email,
       email: account.email,
       photoUrl: account.photoUrl,
+      visitorToken: visitorToken,
       deviceRegister: deviceRegister,
     );
   }
@@ -32,6 +39,7 @@ class LoginUser {
       displayName: json['displayName'] as String? ?? '',
       email: json['email'] as String? ?? '',
       photoUrl: json['photoUrl'] as String?,
+      visitorToken: json['visitorToken'] as String?,
       deviceRegister: json['deviceRegister'] == null
           ? null
           : DeviceRegister.fromJson(
@@ -46,6 +54,7 @@ class LoginUser {
       'displayName': displayName,
       'email': email,
       'photoUrl': photoUrl,
+      'visitorToken': visitorToken,
       'deviceRegister': deviceRegister?.toJson(),
     };
   }

@@ -23,6 +23,8 @@ class AuthStorageService extends GetxService {
 
   String get initialPage => _storedUser.value == null ? AppRoutes.login : AppRoutes.dashboard;
 
+  String? get visitorToken => _storedUser.value?.visitorToken;
+
   Future<AuthStorageService> init() async {
     await loadUser();
     return this;
