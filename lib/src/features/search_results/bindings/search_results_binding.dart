@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../../home/models/property_search_type.dart';
+import '../../home/model/property_search_type.dart';
 import '../controllers/search_results_controller.dart';
 import '../data/datasources/search_results_remote_data_source.dart';
 import '../data/repositories/search_results_repository.dart';

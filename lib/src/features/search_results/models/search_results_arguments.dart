@@ -1,4 +1,4 @@
-import '../../home/models/property_search_type.dart';
+import '../../home/model/property_search_type.dart';
 
 class SearchResultsArguments {
   const SearchResultsArguments({

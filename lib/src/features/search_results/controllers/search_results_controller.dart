@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-import '../../home/models/property_search_type.dart';
+import '../../home/model/property_search_type.dart';
 import '../../login/controllers/login_controller.dart';
 import '../data/models/search_result_model.dart';
 import '../data/repositories/search_results_repository.dart';

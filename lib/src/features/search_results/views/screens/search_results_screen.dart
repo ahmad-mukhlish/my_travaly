@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../controllers/search_results_controller.dart';
-import '../../../home/models/property_search_type.dart';
+import '../../../home/model/property_search_type.dart';
 import '../../data/models/search_result_model.dart';
 
 class SearchResultsScreen extends GetView<SearchResultsController> {
