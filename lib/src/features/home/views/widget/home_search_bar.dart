@@ -21,24 +21,22 @@ class HomeSearchBar extends StatelessWidget {
           return Row(
             children: [
               Expanded(
-                child: TextField(
-                  controller: controller.searchTextController,
-                  onChanged: (value) => controller.searchQuery.value = value,
-                  onSubmitted: controller.onSearchSubmitted,
-                  textInputAction: TextInputAction.search,
-                  decoration: InputDecoration(
-                    hintText: placeholder,
-                    prefixIcon: const Icon(Icons.search),
-                    suffixIcon: IconButton(
+                child: SearchBar(
+                  elevation: WidgetStateProperty.all(0),
+                  controller: controller.searchController,
+                  hintText: placeholder,
+                  leading: const Icon(Icons.search),
+                  trailing: [
+                    IconButton(
                       onPressed: () => controller.onSearchSubmitted(
-                        controller.searchTextController.text,
+                        controller.searchController.text,
                       ),
                       icon: const Icon(Icons.arrow_forward),
                     ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                  ),
+                  ],
+                  onChanged: (value) => controller.searchQuery.value = value,
+                  onSubmitted: controller.onSearchSubmitted,
+                  textInputAction: TextInputAction.search,
                 ),
               ),
               const SizedBox(width: 12),
