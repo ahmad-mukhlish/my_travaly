@@ -100,7 +100,7 @@ class _SearchResultCard extends StatelessWidget {
                 result.imageUrl,
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => Container(
-                  color: theme.colorScheme.surfaceVariant,
+                  color: theme.colorScheme.surfaceContainerHighest,
                   alignment: Alignment.center,
                   child: const Icon(Icons.image_not_supported_outlined, size: 48),
                 ),

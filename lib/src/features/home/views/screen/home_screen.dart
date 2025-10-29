@@ -121,7 +121,7 @@ class HomeScreen extends GetView<HomeController> {
                 selected: isSelected,
                 onSelected: (_) => controller.onEntityTypeSelected(type),
                 selectedColor: theme.colorScheme.primary,
-                backgroundColor: theme.colorScheme.surfaceVariant,
+                backgroundColor: theme.colorScheme.surfaceContainerHighest,
                 side: BorderSide(
                   color: isSelected
                       ? theme.colorScheme.primary

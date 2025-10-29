@@ -62,10 +62,6 @@ class SearchResultsRemoteDataSource {
       return const SearchResultsPage(results: <SearchResult>[], excludedHotelCodes: <String>[]);
     }
 
-    if (body is! Map<String, dynamic>) {
-      throw const FormatException('Unexpected search results response format');
-    }
-
     final data = body['data'] as Map<String, dynamic>? ?? const {};
     final rawList = data['arrayOfHotelList'];
     final rawExcluded = data['arrayOfExcludedHotels'];
