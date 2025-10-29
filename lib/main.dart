@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
       ),
       navigatorObservers: [ChuckerFlutter.navigatorObserver],
       initialBinding: LoginBinding(),
-      initialRoute: AppPages.initial,
+      initialRoute: AuthStorageService.to.initialPage,
       getPages: AppPages.routes,
     );
   }

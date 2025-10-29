@@ -17,14 +17,14 @@ class DashboardController extends GetxController {
   final RxBool isSigningOut = false.obs;
   final RxBool isLoading = false.obs;
   final RxList<PopularStay> popularStays = <PopularStay>[].obs;
-  final RxString searchQuery = 'Jamshedpur'.obs;
+  final RxString searchQuery = ''.obs;
   final Rx<PopularStaySearchType> selectedSearchType =
       PopularStaySearchType.city.obs;
   final RxString errorMessage = ''.obs;
 
   final LoginController loginController = Get.find<LoginController>();
   final TextEditingController searchTextController =
-      TextEditingController(text: 'Jamshedpur');
+      TextEditingController(text: '');
 
   LoginUser? get user => loginController.user.value;
 
@@ -50,12 +50,8 @@ class DashboardController extends GetxController {
     }
 
     final searchInput = (query ?? searchQuery.value).trim();
-    if (searchInput.isEmpty) {
-      searchQuery.value = 'Jamshedpur';
-      searchTextController.text = 'Jamshedpur';
-    }
 
-    final effectiveQuery = searchInput.isEmpty ? 'Jamshedpur' : searchInput;
+    final effectiveQuery = searchInput.isEmpty ? '' : searchInput;
     searchQuery.value = effectiveQuery;
     if (searchTextController.text.trim() != effectiveQuery) {
       searchTextController.text = effectiveQuery;
