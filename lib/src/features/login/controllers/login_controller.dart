@@ -6,8 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_travaly/src/features/login/model/device_register.dart';
-import 'package:my_travaly/src/features/login/services/auth_storage_service.dart';
 import 'package:my_travaly/src/routes/app_routes.dart';
+import 'package:my_travaly/src/services/auth/auth_storage_service.dart';
 
 import '../model/login_model.dart';
 
