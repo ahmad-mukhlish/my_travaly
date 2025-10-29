@@ -20,14 +20,12 @@ class HomeController extends GetxController {
   final RxBool isLoading = false.obs;
   final RxList<Property> properties = <Property>[].obs;
   final RxString searchQuery = ''.obs;
-  final Rx<PropertySearchType> selectedSearchType =
-      PropertySearchType.city.obs;
+  final Rx<PropertySearchType> selectedSearchType = PropertySearchType.city.obs;
   final RxString errorMessage = ''.obs;
   final RxInt selectedTabIndex = 0.obs;
 
   final LoginController loginController = Get.find<LoginController>();
-  final TextEditingController searchTextController =
-      TextEditingController(text: '');
+  final SearchController searchController = SearchController();
 
   LoginUser? get user => loginController.user.value;
 
@@ -39,26 +37,26 @@ class HomeController extends GetxController {
 
   @override
   void onClose() {
-    searchTextController.dispose();
+    searchController.dispose();
     super.onClose();
   }
 
   Future<void> fetchProperties({String? query}) async {
     final visitorToken = user?.visitorToken ?? '';
     if (visitorToken.isEmpty) {
-      errorMessage.value =
-          'Visitor token missing. Please sign out and sign in again.';
+      errorMessage.value = 'Visitor token missing. Please sign out and sign in again.';
       properties.clear();
       return;
     }
 
     final searchInput = (query ?? searchQuery.value).trim();
-
     final effectiveQuery = searchInput.isEmpty ? '' : searchInput;
+
     searchQuery.value = effectiveQuery;
-    if (searchTextController.text.trim() != effectiveQuery) {
-      searchTextController.text = effectiveQuery;
+    if (searchController.text.trim() != effectiveQuery) {
+      searchController.text = effectiveQuery;
     }
+
     final (searchType, searchInfo) =
         _buildSearchParams(selectedSearchType.value, effectiveQuery);
 
@@ -123,21 +121,6 @@ class HomeController extends GetxController {
           },
         );
     }
-  }
-
-  String _defaultQueryForType(PropertySearchType type) {
-    switch (type) {
-      case PropertySearchType.hotelName:
-        return 'Hotel Holideiinn';
-      case PropertySearchType.city:
-        return 'Jamshedpur';
-      case PropertySearchType.state:
-        return 'Jharkhand';
-      case PropertySearchType.country:
-        return 'India';
-    }
-
-    return 'Jamshedpur';
   }
 
   void onSearchSubmitted(String value) {
