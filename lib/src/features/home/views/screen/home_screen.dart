@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../controllers/dashboard_controller.dart';
-import '../../data/models/popular_stay_model.dart';
+import '../../controllers/home_controller.dart';
+import '../../data/models/property_model.dart';
 
-class DashboardScreen extends GetView<DashboardController> {
-  const DashboardScreen({super.key});
+class HomeScreen extends GetView<HomeController> {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -95,10 +95,10 @@ class DashboardScreen extends GetView<DashboardController> {
                       ),
                     );
                   }
-                  final stays = controller.popularStays;
-                  if (stays.isEmpty) {
+                  final properties = controller.properties;
+                  if (properties.isEmpty) {
                     return RefreshIndicator(
-                      onRefresh: () => controller.fetchPopularStays(),
+                      onRefresh: () => controller.fetchProperties(),
                       child: ListView(
                         physics: const AlwaysScrollableScrollPhysics(),
                         children: [
@@ -106,7 +106,7 @@ class DashboardScreen extends GetView<DashboardController> {
                             height: MediaQuery.of(context).size.height * 0.4,
                             child: Center(
                               child: Text(
-                                'No stays found. Try a different search.',
+                                'No properties found. Try a different search.',
                                 style: theme.textTheme.bodyMedium,
                               ),
                             ),
@@ -116,14 +116,14 @@ class DashboardScreen extends GetView<DashboardController> {
                     );
                   }
                   return RefreshIndicator(
-                    onRefresh: () => controller.fetchPopularStays(),
+                    onRefresh: () => controller.fetchProperties(),
                     child: ListView.separated(
                       physics: const AlwaysScrollableScrollPhysics(),
-                      itemCount: stays.length,
+                      itemCount: properties.length,
                       separatorBuilder: (_, __) => const SizedBox(height: 12),
                       itemBuilder: (context, index) {
-                        final stay = stays[index];
-                        return _PopularStayCard(stay: stay);
+                        final property = properties[index];
+                        return _PropertyCard(property: property);
                       },
                     ),
                   );
@@ -140,7 +140,7 @@ class DashboardScreen extends GetView<DashboardController> {
 class _SearchBar extends StatelessWidget {
   const _SearchBar({required this.controller});
 
-  final DashboardController controller;
+  final HomeController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -183,16 +183,16 @@ class _SearchBar extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 12),
-              DropdownButton<PopularStaySearchType>(
+              DropdownButton<PropertySearchType>(
                 value: controller.selectedSearchType.value,
                 onChanged: (type) {
                   if (type != null) {
                     controller.onSearchTypeChanged(type);
                   }
                 },
-                items: PopularStaySearchType.values
+                items: PropertySearchType.values
                     .map(
-                      (type) => DropdownMenuItem<PopularStaySearchType>(
+                      (type) => DropdownMenuItem<PropertySearchType>(
                         value: type,
                         child: Text(_labelFor(type)),
                       ),
@@ -206,37 +206,37 @@ class _SearchBar extends StatelessWidget {
     );
   }
 
-  static String _labelFor(PopularStaySearchType type) {
+  static String _labelFor(PropertySearchType type) {
     switch (type) {
-      case PopularStaySearchType.hotelName:
+      case PropertySearchType.hotelName:
         return 'Hotel';
-      case PopularStaySearchType.city:
+      case PropertySearchType.city:
         return 'City';
-      case PopularStaySearchType.state:
+      case PropertySearchType.state:
         return 'State';
-      case PopularStaySearchType.country:
+      case PropertySearchType.country:
         return 'Country';
     }
   }
 
-  static String _placeholderFor(PopularStaySearchType type) {
+  static String _placeholderFor(PropertySearchType type) {
     switch (type) {
-      case PopularStaySearchType.hotelName:
+      case PropertySearchType.hotelName:
         return 'Search by hotel name';
-      case PopularStaySearchType.city:
+      case PropertySearchType.city:
         return 'Search by city';
-      case PopularStaySearchType.state:
+      case PropertySearchType.state:
         return 'Search by state';
-      case PopularStaySearchType.country:
+      case PropertySearchType.country:
         return 'Search by country';
     }
   }
 }
 
-class _PopularStayCard extends StatelessWidget {
-  const _PopularStayCard({required this.stay});
+class _PropertyCard extends StatelessWidget {
+  const _PropertyCard({required this.property});
 
-  final PopularStay stay;
+  final Property property;
 
   @override
   Widget build(BuildContext context) {
@@ -248,12 +248,12 @@ class _PopularStayCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (stay.propertyImage.isNotEmpty)
+          if (property.propertyImage.isNotEmpty)
             SizedBox(
               height: 160,
               width: double.infinity,
               child: Image.network(
-                stay.propertyImage,
+                property.propertyImage,
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => Container(
                   color: theme.colorScheme.surfaceVariant,
@@ -268,14 +268,14 @@ class _PopularStayCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  stay.propertyName,
+                  property.propertyName,
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  '${stay.city}, ${stay.state.isNotEmpty ? '${stay.state}, ' : ''}${stay.country}',
+                  '${property.city}, ${property.state.isNotEmpty ? '${property.state}, ' : ''}${property.country}',
                   style: theme.textTheme.bodyMedium,
                 ),
                 const SizedBox(height: 8),
@@ -288,18 +288,20 @@ class _PopularStayCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      stay.rating > 0 ? stay.rating.toStringAsFixed(1) : 'NR',
+                      property.rating > 0
+                          ? property.rating.toStringAsFixed(1)
+                          : 'NR',
                       style: theme.textTheme.bodyMedium,
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      '(${stay.totalReviews} reviews)',
+                      '(${property.totalReviews} reviews)',
                       style: theme.textTheme.bodySmall,
                     ),
                     const Spacer(),
                     Text(
-                      stay.priceDisplayAmount.isNotEmpty
-                          ? stay.priceDisplayAmount
+                      property.priceDisplayAmount.isNotEmpty
+                          ? property.priceDisplayAmount
                           : '--',
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w600,
@@ -309,17 +311,17 @@ class _PopularStayCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  stay.propertyType.toUpperCase(),
+                  property.propertyType.toUpperCase(),
                   style: theme.textTheme.labelMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                     color: theme.colorScheme.primary,
                     letterSpacing: 0.6,
                   ),
                 ),
-                if (stay.street.isNotEmpty) ...[
+                if (property.street.isNotEmpty) ...[
                   const SizedBox(height: 8),
                   Text(
-                    stay.street,
+                    property.street,
                     style: theme.textTheme.bodySmall,
                   ),
                 ],

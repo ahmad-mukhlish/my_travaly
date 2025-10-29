@@ -3,23 +3,23 @@ import 'package:get/get.dart';
 
 import '../../login/controllers/login_controller.dart';
 import '../../login/model/login_model.dart';
-import '../data/models/popular_stay_model.dart';
-import '../data/repositories/dashboard_repository.dart';
+import '../data/models/property_model.dart';
+import '../data/repositories/home_repository.dart';
 
-enum PopularStaySearchType { hotelName, city, state, country }
+enum PropertySearchType { hotelName, city, state, country }
 
-class DashboardController extends GetxController {
-  DashboardController({DashboardRepository? repository})
-      : _repository = repository ?? Get.find<DashboardRepository>();
+class HomeController extends GetxController {
+  HomeController({HomeRepository? repository})
+      : _repository = repository ?? Get.find<HomeRepository>();
 
-  final DashboardRepository _repository;
+  final HomeRepository _repository;
 
   final RxBool isSigningOut = false.obs;
   final RxBool isLoading = false.obs;
-  final RxList<PopularStay> popularStays = <PopularStay>[].obs;
+  final RxList<Property> properties = <Property>[].obs;
   final RxString searchQuery = ''.obs;
-  final Rx<PopularStaySearchType> selectedSearchType =
-      PopularStaySearchType.city.obs;
+  final Rx<PropertySearchType> selectedSearchType =
+      PropertySearchType.city.obs;
   final RxString errorMessage = ''.obs;
 
   final LoginController loginController = Get.find<LoginController>();
@@ -31,7 +31,7 @@ class DashboardController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchPopularStays();
+    fetchProperties();
   }
 
   @override
@@ -40,12 +40,12 @@ class DashboardController extends GetxController {
     super.onClose();
   }
 
-  Future<void> fetchPopularStays({String? query}) async {
+  Future<void> fetchProperties({String? query}) async {
     final visitorToken = user?.visitorToken ?? '';
     if (visitorToken.isEmpty) {
       errorMessage.value =
           'Visitor token missing. Please sign out and sign in again.';
-      popularStays.clear();
+      properties.clear();
       return;
     }
 
@@ -63,22 +63,22 @@ class DashboardController extends GetxController {
     errorMessage.value = '';
 
     try {
-      final stays = await _repository.getPopularStays(
+      final fetched = await _repository.getProperties(
         visitorToken: visitorToken,
         searchType: searchType,
         searchInfo: searchInfo,
       );
-      popularStays.assignAll(stays);
+      properties.assignAll(fetched);
     } catch (error) {
-      errorMessage.value = 'Failed to load stays: $error';
-      popularStays.clear();
+      errorMessage.value = 'Failed to load properties: $error';
+      properties.clear();
     } finally {
       isLoading.value = false;
     }
   }
 
   (String, Map<String, dynamic>) _buildSearchParams(
-    PopularStaySearchType type,
+    PropertySearchType type,
     String query,
   ) {
     final trimmed = query.trim();
@@ -87,7 +87,7 @@ class DashboardController extends GetxController {
     }
 
     switch (type) {
-      case PopularStaySearchType.hotelName:
+      case PropertySearchType.hotelName:
         return (
           'byRandom',
           {
@@ -95,7 +95,7 @@ class DashboardController extends GetxController {
             'propertyName': trimmed,
           },
         );
-      case PopularStaySearchType.city:
+      case PropertySearchType.city:
         return (
           'byCity',
           {
@@ -104,7 +104,7 @@ class DashboardController extends GetxController {
             'city': trimmed,
           },
         );
-      case PopularStaySearchType.state:
+      case PropertySearchType.state:
         return (
           'byState',
           {
@@ -112,7 +112,7 @@ class DashboardController extends GetxController {
             'state': trimmed,
           },
         );
-      case PopularStaySearchType.country:
+      case PropertySearchType.country:
         return (
           'byCountry',
           {
@@ -124,12 +124,12 @@ class DashboardController extends GetxController {
 
   void onSearchSubmitted(String value) {
     searchQuery.value = value;
-    fetchPopularStays(query: value);
+    fetchProperties(query: value);
   }
 
-  void onSearchTypeChanged(PopularStaySearchType type) {
+  void onSearchTypeChanged(PropertySearchType type) {
     selectedSearchType.value = type;
-    fetchPopularStays();
+    fetchProperties();
   }
 
   void signOut() async {

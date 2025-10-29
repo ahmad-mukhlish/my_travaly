@@ -1,5 +1,5 @@
-class PopularStay {
-  const PopularStay({
+class Property {
+  const Property({
     required this.propertyName,
     required this.propertyStar,
     required this.propertyImage,
@@ -31,13 +31,13 @@ class PopularStay {
   final int totalReviews;
   final String propertyUrl;
 
-  factory PopularStay.fromJson(Map<String, dynamic> json) {
+  factory Property.fromJson(Map<String, dynamic> json) {
     final address = json['propertyAddress'] as Map<String, dynamic>? ?? const {};
     final markedPrice = json['markedPrice'] as Map<String, dynamic>? ?? const {};
     final googleReview = json['googleReview'] as Map<String, dynamic>? ?? const {};
     final reviewData = googleReview['data'] as Map<String, dynamic>? ?? const {};
 
-    return PopularStay(
+    return Property(
       propertyName: json['propertyName'] as String? ?? 'Unknown property',
       propertyStar: (json['propertyStar'] as num?)?.toInt() ?? 0,
       propertyImage: json['propertyImage'] as String? ?? '',

@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
-import 'package:my_travaly/src/features/dashboard/views/screen/dashboard_screen.dart';
+import 'package:my_travaly/src/features/home/views/screen/home_screen.dart';
 
-import '../features/dashboard/bindings/dashboard_binding.dart';
+import '../features/home/bindings/home_binding.dart';
 import '../features/login/bindings/login_binding.dart';
 import '../features/login/views/screen/login_screen.dart';
 import 'app_routes.dart';
@@ -17,8 +17,8 @@ class AppPages {
     ),
     GetPage<dynamic>(
       name: AppRoutes.home,
-      page: () => const DashboardScreen(),
-      binding: DashboardBinding(),
+      page: () => const HomeScreen(),
+      binding: HomeBinding(),
     ),
   ];
 }

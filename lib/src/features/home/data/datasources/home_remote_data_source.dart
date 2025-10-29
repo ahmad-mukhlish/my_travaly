@@ -2,17 +2,17 @@ import 'package:dio/dio.dart';
 
 import '../../../../config/environment_config.dart';
 import '../../../../services/network/api_service.dart';
-import '../models/popular_stay_model.dart';
+import '../models/property_model.dart';
 
-class DashboardRemoteDataSource {
-  DashboardRemoteDataSource({ApiService? apiService})
+class HomeRemoteDataSource {
+  HomeRemoteDataSource({ApiService? apiService})
       : _apiService = apiService ?? ApiService.to;
 
   final ApiService _apiService;
 
-  static const String _popularStayPath = '';
+  static const String _propertyPath = '';
 
-  Future<List<PopularStay>> fetchPopularStays({
+  Future<List<Property>> fetchProperties({
     required String visitorToken,
     required String searchType,
     required Map<String, dynamic> searchTypeInfo,
@@ -42,23 +42,24 @@ class DashboardRemoteDataSource {
     );
 
     final response = await _apiService.post<Map<String, dynamic>>(
-      _popularStayPath,
+      _propertyPath,
       data: payload,
       options: options,
     );
 
     final body = response.data;
     if (body == null) {
-      return const <PopularStay>[];
+      return const <Property>[];
     }
+
 
     final list = body['data'];
     if (list is! List) {
-      return const <PopularStay>[];
+      return const <Property>[];
     }
     return list
         .whereType<Map<String, dynamic>>()
-        .map(PopularStay.fromJson)
+        .map(Property.fromJson)
         .toList();
   }
 }

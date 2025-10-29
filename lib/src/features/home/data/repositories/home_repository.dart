@@ -1,14 +1,14 @@
-import '../datasources/dashboard_remote_data_source.dart';
-import '../models/popular_stay_model.dart';
+import '../datasources/home_remote_data_source.dart';
+import '../models/property_model.dart';
 
-class DashboardRepository {
-  const DashboardRepository({
-    required DashboardRemoteDataSource remoteDataSource,
+class HomeRepository {
+  const HomeRepository({
+    required HomeRemoteDataSource remoteDataSource,
   }) : _remoteDataSource = remoteDataSource;
 
-  final DashboardRemoteDataSource _remoteDataSource;
+  final HomeRemoteDataSource _remoteDataSource;
 
-  Future<List<PopularStay>> getPopularStays({
+  Future<List<Property>> getProperties({
     required String visitorToken,
     required String searchType,
     required Map<String, dynamic> searchInfo,
@@ -16,7 +16,7 @@ class DashboardRepository {
     int limit = 10,
     String currency = 'INR',
   }) {
-    return _remoteDataSource.fetchPopularStays(
+    return _remoteDataSource.fetchProperties(
       visitorToken: visitorToken,
       searchType: searchType,
       searchTypeInfo: searchInfo,
