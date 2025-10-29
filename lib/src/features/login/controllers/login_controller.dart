@@ -69,12 +69,10 @@ class LoginController extends GetxController {
       }
 
       Get.toNamed(AppRoutes.dashboard);
-    } catch (error) {
-      Get.snackbar(
-        'Sign in failed',
-        error.toString(),
-        snackPosition: SnackPosition.BOTTOM,
-      );
+    } catch (e, stacktrace) {
+      if (kDebugMode) {
+        print('Error sign in with google: $e \n $stacktrace');
+      }
     } finally {
       isSigningIn.value = false;
     }

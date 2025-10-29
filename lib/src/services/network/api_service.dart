@@ -1,3 +1,4 @@
+import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart' hide Response;
@@ -100,27 +101,6 @@ class ApiService extends GetxService {
   }
 
   void _configureInterceptors() {
-    _dio.interceptors.add(
-      InterceptorsWrapper(
-        onRequest: (options, handler) {
-          final token = EnvironmentConfig.authToken;
-          if (token.isNotEmpty) {
-            options.headers.putIfAbsent(
-              'Authorization',
-              () => 'Bearer $token',
-            );
-          }
-          handler.next(options);
-        },
-        onError: (error, handler) {
-          if (kDebugMode) {
-            debugPrint(
-              'API error: ${error.requestOptions.method} ${error.requestOptions.uri} -> ${error.message}',
-            );
-          }
-          handler.next(error);
-        },
-      ),
-    );
+    _dio.interceptors.add(ChuckerDioInterceptor());
   }
 }

@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 
-import '../../../routes/app_routes.dart';
 import '../../login/controllers/login_controller.dart';
 import '../../login/model/login_model.dart';
 import '../model/dashboard_model.dart';
