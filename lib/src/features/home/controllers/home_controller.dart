@@ -1,15 +1,32 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../login/controllers/login_controller.dart';
 import '../../login/model/login_model.dart';
 import '../data/models/property_model.dart';
+import '../data/models/search_auto_complete_result.dart' hide AutoCompleteCategory;
 import '../data/repositories/home_repository.dart';
+import '../model/auto_complete_entry.dart';
 import '../model/entity_type.dart';
 import '../model/property_search_type.dart';
+import '../../search_results/models/search_results_arguments.dart';
+import 'package:my_travaly/src/routes/app_routes.dart';
 
 class HomeController extends GetxController {
+  static const List<String> _autoCompleteDisplayOrder = <String>[
+    'byPropertyName',
+    'byCity',
+    'byState',
+    'byCountry',
+    'byStreet',
+  ];
+  static const List<String> _autoCompleteSearchTypes = <String>[
+    'byCity',
+    'byState',
+    'byCountry',
+    'byRandom',
+    'byStreet',
+    'byPropertyName',
+  ];
   HomeController({HomeRepository? repository})
       : _repository = repository ?? Get.find<HomeRepository>();
 
@@ -23,10 +40,16 @@ class HomeController extends GetxController {
   final RxString errorMessage = ''.obs;
   final RxInt selectedTabIndex = 0.obs;
   final Rx<EntityType> selectedEntityType = EntityType.any.obs;
+  final RxBool isAutoCompleteLoading = false.obs;
+  final Rxn<SearchAutoCompleteResult> autoCompleteResult =
+      Rxn<SearchAutoCompleteResult>();
+  final RxString autoCompleteError = ''.obs;
 
   final LoginController loginController = Get.find<LoginController>();
   final SearchController searchController = SearchController();
-  Timer? _searchDebounce;
+  String _lastAutoCompleteQuery = '';
+  List<HomeAutoCompleteEntry> _cachedAutoCompleteEntries =
+      const <HomeAutoCompleteEntry>[];
 
   LoginUser? get user => loginController.user.value;
 
@@ -39,11 +62,16 @@ class HomeController extends GetxController {
   @override
   void onClose() {
     searchController.dispose();
-    _searchDebounce?.cancel();
     super.onClose();
   }
 
-  Future<void> fetchProperties({String? query, EntityType? entityType}) async {
+  Future<void> fetchProperties({
+    String? query,
+    EntityType? entityType,
+    PropertySearchType? searchTypeOverride,
+    Map<String, dynamic>? searchInfoOverride,
+    String? searchTypeKeyOverride,
+  }) async {
     final visitorToken = user?.visitorToken ?? '';
     if (visitorToken.isEmpty) {
       errorMessage.value = 'Visitor token missing. Please sign out and sign in again.';
@@ -64,8 +92,28 @@ class HomeController extends GetxController {
       selectedEntityType.value = nextEntityType;
     }
 
-    final (searchType, searchInfo) =
-        _buildSearchParams(selectedSearchType.value, effectiveQuery);
+    final PropertySearchType effectiveSearchType =
+        searchTypeOverride ?? selectedSearchType.value;
+    if (searchTypeOverride != null &&
+        selectedSearchType.value != searchTypeOverride) {
+      selectedSearchType.value = searchTypeOverride;
+    }
+
+    String searchTypeKey;
+    Map<String, dynamic> searchInfo;
+    if (searchInfoOverride != null && searchTypeKeyOverride != null) {
+      searchTypeKey = searchTypeKeyOverride;
+      searchInfo = searchInfoOverride.map((key, value) {
+        if (value is String) {
+          return MapEntry(key, value.trim());
+        }
+        return MapEntry(key, value);
+      });
+    } else {
+      final tuple = _buildSearchParams(effectiveSearchType, effectiveQuery);
+      searchTypeKey = tuple.$1;
+      searchInfo = tuple.$2;
+    }
 
     isLoading.value = true;
     errorMessage.value = '';
@@ -73,7 +121,7 @@ class HomeController extends GetxController {
     try {
       final fetched = await _repository.getProperties(
         visitorToken: visitorToken,
-        searchType: searchType,
+        searchType: searchTypeKey,
         searchInfo: searchInfo,
         entityType: nextEntityType.backendValue,
       );
@@ -130,10 +178,6 @@ class HomeController extends GetxController {
 
   void onSearchChanged(String value) {
     searchQuery.value = value;
-    _searchDebounce?.cancel();
-    _searchDebounce = Timer(const Duration(milliseconds: 500), () {
-      searchAutoComplete(searchQuery.value);
-    });
   }
 
   void onSearchSubmitted(String value) {
@@ -149,12 +193,6 @@ class HomeController extends GetxController {
     //     searchType: selectedSearchType.value,
     //   ),
     // );
-    Get.snackbar(
-      'Search autocomplete submit',
-      'Query: $value',
-      snackPosition: SnackPosition.TOP,
-      duration: const Duration(seconds: 2),
-    );
   }
 
   void onSearchTypeChanged(PropertySearchType type) {
@@ -170,13 +208,183 @@ class HomeController extends GetxController {
     fetchProperties(entityType: type);
   }
 
-  void searchAutoComplete(String query) {
-    Get.snackbar(
-      'Search autocomplete',
-      'Query: $query',
-      snackPosition: SnackPosition.TOP,
-      duration: const Duration(seconds: 2),
-    );
+  Future<List<HomeAutoCompleteEntry>> searchAutoComplete(String query) async {
+    final trimmed = query.trim();
+    if (trimmed.isEmpty) {
+      _lastAutoCompleteQuery = '';
+      autoCompleteResult.value = null;
+      autoCompleteError.value = '';
+      _cachedAutoCompleteEntries = const <HomeAutoCompleteEntry>[];
+      return _cachedAutoCompleteEntries;
+    }
+
+    if (trimmed == _lastAutoCompleteQuery &&
+        autoCompleteError.value.isEmpty &&
+        _cachedAutoCompleteEntries.isNotEmpty) {
+      return _cachedAutoCompleteEntries;
+    }
+
+    final visitorToken = user?.visitorToken ?? '';
+    if (visitorToken.isEmpty) {
+      autoCompleteError.value =
+          'Visitor token missing. Please sign out and sign in again.';
+      autoCompleteResult.value = null;
+      _cachedAutoCompleteEntries = const <HomeAutoCompleteEntry>[];
+      return _cachedAutoCompleteEntries;
+    }
+
+    _lastAutoCompleteQuery = trimmed;
+    isAutoCompleteLoading.value = true;
+    autoCompleteError.value = '';
+
+    try {
+      final result = await _repository.searchAutoComplete(
+        visitorToken: visitorToken,
+        inputText: trimmed,
+        searchTypes: _autoCompleteSearchTypes,
+      );
+      autoCompleteResult.value = result;
+      _cachedAutoCompleteEntries = _buildAutoCompleteEntries(result);
+      return _cachedAutoCompleteEntries;
+    } catch (error) {
+      autoCompleteError.value = 'Failed to fetch suggestions: $error';
+      autoCompleteResult.value = null;
+      _lastAutoCompleteQuery = '';
+      _cachedAutoCompleteEntries = const <HomeAutoCompleteEntry>[];
+      throw Exception(autoCompleteError.value);
+    } finally {
+      isAutoCompleteLoading.value = false;
+    }
+  }
+
+  List<HomeAutoCompleteEntry> _buildAutoCompleteEntries(
+    SearchAutoCompleteResult result,
+  ) {
+    final entries = <HomeAutoCompleteEntry>[];
+    final orderedKeys = result.categories.keys.toList()
+      ..sort((a, b) {
+        final indexA = _autoCompleteDisplayOrder.indexOf(a);
+        final indexB = _autoCompleteDisplayOrder.indexOf(b);
+        if (indexA == -1 && indexB == -1) {
+          return a.compareTo(b);
+        }
+        if (indexA == -1) {
+          return 1;
+        }
+        if (indexB == -1) {
+          return -1;
+        }
+        return indexA.compareTo(indexB);
+      });
+
+    for (final key in orderedKeys) {
+      final category = result.categories[key];
+      if (category == null) {
+        continue;
+      }
+      if (!category.present || category.suggestions.isEmpty) {
+        continue;
+      }
+      final resolvedCategory = categoryFromKey(key);
+      entries.add(
+        HomeAutoCompleteHeader(
+          category: resolvedCategory,
+          title: resolvedCategory.displayName,
+          count: category.numberOfResult,
+        ),
+      );
+      for (final suggestion in category.suggestions) {
+        entries.add(
+          HomeAutoCompleteItem(
+            category: resolvedCategory,
+            categoryKey: key,
+            suggestion: suggestion,
+          ),
+        );
+      }
+    }
+    return entries;
+  }
+
+  Future<void> handleAutoCompleteSelection(HomeAutoCompleteItem item) async {
+    final suggestion = item.suggestion;
+    searchController.text = suggestion.valueToDisplay;
+    searchQuery.value = suggestion.valueToDisplay;
+
+    switch (item.category) {
+      case AutoCompleteCategory.property:
+        final searchArray = suggestion.searchArray;
+        final propertyCodes = searchArray?.query ?? const <String>[];
+        if (propertyCodes.isEmpty) {
+          Get.snackbar(
+            'Unavailable',
+            'Property details not available for this suggestion.',
+            snackPosition: SnackPosition.BOTTOM,
+          );
+          return;
+        }
+        final propertyCode = propertyCodes.first;
+        final searchType = searchArray?.type ?? 'hotelIdSearch';
+        if (selectedSearchType.value != PropertySearchType.hotelName) {
+          selectedSearchType.value = PropertySearchType.hotelName;
+        }
+        Get.toNamed(
+          AppRoutes.searchResults,
+          arguments: SearchResultsArguments(
+            query: propertyCode,
+            searchType: selectedSearchType.value,
+            customSearchType: searchType,
+          ),
+        );
+        break;
+      case AutoCompleteCategory.city:
+        final info = <String, dynamic>{
+          'city': suggestion.address?.city ?? suggestion.valueToDisplay,
+          'state': suggestion.address?.state ?? '',
+          'country': suggestion.address?.country ?? '',
+        };
+        await fetchProperties(
+          query: suggestion.address?.city ?? suggestion.valueToDisplay,
+          searchTypeOverride: PropertySearchType.city,
+          searchTypeKeyOverride: 'byCity',
+          searchInfoOverride: info,
+        );
+        break;
+      case AutoCompleteCategory.state:
+        final info = <String, dynamic>{
+          'state': suggestion.address?.state ?? suggestion.valueToDisplay,
+          'country': suggestion.address?.country ?? '',
+        };
+        await fetchProperties(
+          query: suggestion.address?.state ?? suggestion.valueToDisplay,
+          searchTypeOverride: PropertySearchType.state,
+          searchTypeKeyOverride: 'byState',
+          searchInfoOverride: info,
+        );
+        break;
+      case AutoCompleteCategory.country:
+        final info = <String, dynamic>{
+          'country': suggestion.address?.country ?? suggestion.valueToDisplay,
+        };
+        await fetchProperties(
+          query: suggestion.address?.country ?? suggestion.valueToDisplay,
+          searchTypeOverride: PropertySearchType.country,
+          searchTypeKeyOverride: 'byCountry',
+          searchInfoOverride: info,
+        );
+        break;
+      case AutoCompleteCategory.street:
+      case AutoCompleteCategory.other:
+        await fetchProperties(
+          query: suggestion.valueToDisplay,
+          searchTypeOverride: PropertySearchType.hotelName,
+          searchTypeKeyOverride: 'byRandom',
+          searchInfoOverride: {
+            'keyword': suggestion.valueToDisplay,
+          },
+        );
+        break;
+    }
   }
 
   void changeTab(int index) {

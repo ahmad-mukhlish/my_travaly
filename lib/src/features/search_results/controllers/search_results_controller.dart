@@ -29,6 +29,8 @@ class SearchResultsController extends GetxController {
   final Set<String> _excludedHotelCodes = <String>{};
 
   PropertySearchType get searchType => _arguments.searchType;
+  String get _apiSearchType =>
+      _arguments.customSearchType ?? _arguments.searchType.apiValue;
   String get query => _arguments.query;
 
   int? _getNextPageKey(PagingState<int, SearchResult> state) {
@@ -64,7 +66,7 @@ class SearchResultsController extends GetxController {
       final page = await _repository.fetchSearchResults(
         visitorToken: visitorToken,
         query: query,
-        searchType: searchType.apiValue,
+        searchType: _apiSearchType,
         limit: _pageSize,
         excludedHotelCodes: _excludedHotelCodes.toList(),
         pageKey: pageKey,
