@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import '../../controllers/home_controller.dart';
 import '../widget/home_search_bar.dart';
-import '../widget/property_card.dart';
+import '../widget/hotel_list_view.dart';
 import '../widget/user_view.dart';
 
 class HomeScreen extends GetView<HomeController> {
@@ -58,55 +58,7 @@ class HomeScreen extends GetView<HomeController> {
             HomeSearchBar(controller: controller),
             const SizedBox(height: 16),
             Expanded(
-              child: Obx(() {
-                final error = controller.errorMessage.value;
-                if (controller.isLoading.value) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (error.isNotEmpty) {
-                  return Center(
-                    child: Text(
-                      error,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.error,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  );
-                }
-                final properties = controller.properties;
-                if (properties.isEmpty) {
-                  return RefreshIndicator(
-                    onRefresh: () => controller.fetchProperties(),
-                    child: ListView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      children: [
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.4,
-                          child: Center(
-                            child: Text(
-                              'No properties found. Try a different search.',
-                              style: theme.textTheme.bodyMedium,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }
-                return RefreshIndicator(
-                  onRefresh: () => controller.fetchProperties(),
-                  child: ListView.separated(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    itemCount: properties.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 12),
-                    itemBuilder: (context, index) {
-                      final property = properties[index];
-                      return PropertyCard(property: property);
-                    },
-                  ),
-                );
-              }),
+              child: HotelListView(controller: controller, theme: theme),
             ),
           ],
         ),
@@ -140,35 +92,6 @@ class HomeScreen extends GetView<HomeController> {
             }),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _buildHomeBar extends StatelessWidget {
-  const _buildHomeBar({
-    super.key,
-    required this.controller,
-  });
-
-  final HomeController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(
-      () => BottomNavigationBar(
-        currentIndex: controller.selectedTabIndex.value,
-        onTap: controller.changeTab,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.hotel),
-            label: 'Hotels',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Account',
-          ),
-        ],
       ),
     );
   }
