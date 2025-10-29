@@ -11,18 +11,18 @@ import 'app_routes.dart';
 class AppPages {
   static const initial = AppRoutes.login;
 
-  static final routes = <GetPage<dynamic>>[
-    GetPage<dynamic>(
+  static final routes = [
+    GetPage(
       name: AppRoutes.login,
       page: () => const LoginScreen(),
       binding: LoginBinding(),
     ),
-    GetPage<dynamic>(
+    GetPage(
       name: AppRoutes.home,
       page: () => const HomeScreen(),
       binding: HomeBinding(),
     ),
-    GetPage<dynamic>(
+    GetPage(
       name: AppRoutes.searchResults,
       page: () => const SearchResultsScreen(),
       binding: SearchResultsBinding(),
