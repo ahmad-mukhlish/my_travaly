@@ -42,6 +42,7 @@ dependencies:
   flutter_secure_storage: ^9.2.4
   dio: ^5.7.0
   chucker_flutter: ^1.8.5
+  infinite_scroll_pagination: ^5.1.1
 
 dev_dependencies:
   flutter_test:

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:my_travaly/src/routes/app_routes.dart';
+
 import '../../login/controllers/login_controller.dart';
 import '../../login/model/login_model.dart';
 import '../data/models/property_model.dart';
 import '../data/repositories/home_repository.dart';
-
-enum PropertySearchType { hotelName, city, state, country }
+import '../models/property_search_type.dart';
+import '../../search_results/models/search_results_arguments.dart';
 
 class HomeController extends GetxController {
   HomeController({HomeRepository? repository})
@@ -122,9 +124,34 @@ class HomeController extends GetxController {
     }
   }
 
+  String _defaultQueryForType(PropertySearchType type) {
+    switch (type) {
+      case PropertySearchType.hotelName:
+        return 'Hotel Holideiinn';
+      case PropertySearchType.city:
+        return 'Jamshedpur';
+      case PropertySearchType.state:
+        return 'Jharkhand';
+      case PropertySearchType.country:
+        return 'India';
+    }
+
+    return 'Jamshedpur';
+  }
+
   void onSearchSubmitted(String value) {
-    searchQuery.value = value;
-    fetchProperties(query: value);
+    final trimmed = value.trim();
+    if (trimmed.isEmpty) {
+      return;
+    }
+    searchQuery.value = trimmed;
+    Get.toNamed(
+      AppRoutes.searchResults,
+      arguments: SearchResultsArguments(
+        query: trimmed,
+        searchType: selectedSearchType.value,
+      ),
+    );
   }
 
   void onSearchTypeChanged(PropertySearchType type) {

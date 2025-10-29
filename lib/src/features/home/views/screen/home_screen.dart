@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../controllers/home_controller.dart';
 import '../../data/models/property_model.dart';
+import '../../models/property_search_type.dart';
 
 class HomeScreen extends GetView<HomeController> {
   const HomeScreen({super.key});
@@ -158,7 +159,7 @@ class _SearchBar extends StatelessWidget {
         const SizedBox(height: 12),
         Obx(() {
           final placeholder =
-              _placeholderFor(controller.selectedSearchType.value);
+              controller.selectedSearchType.value.placeholder;
           return Row(
             children: [
               Expanded(
@@ -194,7 +195,7 @@ class _SearchBar extends StatelessWidget {
                     .map(
                       (type) => DropdownMenuItem<PropertySearchType>(
                         value: type,
-                        child: Text(_labelFor(type)),
+                        child: Text(type.label),
                       ),
                     )
                     .toList(),
@@ -204,32 +205,6 @@ class _SearchBar extends StatelessWidget {
         }),
       ],
     );
-  }
-
-  static String _labelFor(PropertySearchType type) {
-    switch (type) {
-      case PropertySearchType.hotelName:
-        return 'Hotel';
-      case PropertySearchType.city:
-        return 'City';
-      case PropertySearchType.state:
-        return 'State';
-      case PropertySearchType.country:
-        return 'Country';
-    }
-  }
-
-  static String _placeholderFor(PropertySearchType type) {
-    switch (type) {
-      case PropertySearchType.hotelName:
-        return 'Search by hotel name';
-      case PropertySearchType.city:
-        return 'Search by city';
-      case PropertySearchType.state:
-        return 'Search by state';
-      case PropertySearchType.country:
-        return 'Search by country';
-    }
   }
 }
 
