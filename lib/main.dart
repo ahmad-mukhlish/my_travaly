@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart' show Firebase;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_travaly/firebase_options.dart';
+import 'package:my_travaly/src/features/login/services/auth_storage_service.dart';
 
 import 'src/features/login/bindings/login_binding.dart';
 import 'src/routes/app_pages.dart';
@@ -11,6 +12,11 @@ void main() async {
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  await Get.putAsync<AuthStorageService>(
+    () => AuthStorageService().init(),
+    permanent: true,
   );
 
   runApp(const MyApp());
@@ -29,7 +35,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       initialBinding: LoginBinding(),
-      initialRoute: AppPages.initial,
+      initialRoute: AuthStorageService.to.initialPage,
       getPages: AppPages.routes,
     );
   }

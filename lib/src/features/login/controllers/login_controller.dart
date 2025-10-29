@@ -1,11 +1,13 @@
+import 'dart:async';
+
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_travaly/src/features/login/model/device_register.dart';
+import 'package:my_travaly/src/features/login/services/auth_storage_service.dart';
 import 'package:my_travaly/src/routes/app_routes.dart';
-
 
 import '../model/login_model.dart';
 
@@ -18,6 +20,12 @@ class LoginController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   bool isInitialize = false;
+
+  @override
+  void onInit() {
+    super.onInit();
+    _restoreSession();
+  }
 
   Future<void> initSignIn() async {
     if (!isInitialize) {
@@ -42,8 +50,12 @@ class LoginController extends GetxController {
         return;
       }
 
-      DeviceRegister deviceRegister = await getDeviceRegister;
+      final DeviceRegister deviceRegister = await getDeviceRegister;
       user.value = LoginUser.create(account, deviceRegister);
+
+      if (user.value != null) {
+        await AuthStorageService.to.saveUser(user.value!);
+      }
 
       Get.toNamed(AppRoutes.dashboard);
     } catch (error) {
@@ -61,6 +73,7 @@ class LoginController extends GetxController {
     try {
       await _signOut();
     } finally {
+      await AuthStorageService.to.clearUser();
       user.value = null;
       if (Get.currentRoute != AppRoutes.login) {
         Get.offAllNamed(AppRoutes.login);
@@ -100,14 +113,21 @@ class LoginController extends GetxController {
       );
     }
 
-    return DeviceRegister(deviceModel: '-',
-        deviceFingerprint: '-',
-        deviceBrand: '-',
-        deviceId: '-',
-        deviceName: '-',
-        deviceManufacturer: '-',
-        deviceProduct: '-',
-        deviceSerialNumber: '-');
+    return DeviceRegister(
+      deviceModel: '-',
+      deviceFingerprint: '-',
+      deviceBrand: '-',
+      deviceId: '-',
+      deviceName: '-',
+      deviceManufacturer: '-',
+      deviceProduct: '-',
+      deviceSerialNumber: '-',
+    );
+  }
+
+  Future<void> _restoreSession() async {
+    final storedUser = AuthStorageService.to.currentUser ?? await AuthStorageService.to.loadUser();
+    user.value = storedUser;
   }
 
   Future<GoogleSignInAccount?> _signInWithGoogle() async {

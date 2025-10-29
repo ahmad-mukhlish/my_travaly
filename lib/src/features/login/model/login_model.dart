@@ -25,4 +25,28 @@ class LoginUser {
       deviceRegister: deviceRegister,
     );
   }
+
+  factory LoginUser.fromJson(Map<String, dynamic> json) {
+    return LoginUser(
+      id: json['id'] as String? ?? '',
+      displayName: json['displayName'] as String? ?? '',
+      email: json['email'] as String? ?? '',
+      photoUrl: json['photoUrl'] as String?,
+      deviceRegister: json['deviceRegister'] == null
+          ? null
+          : DeviceRegister.fromJson(
+              Map<String, dynamic>.from(json['deviceRegister'] as Map),
+            ),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'displayName': displayName,
+      'email': email,
+      'photoUrl': photoUrl,
+      'deviceRegister': deviceRegister?.toJson(),
+    };
+  }
 }
