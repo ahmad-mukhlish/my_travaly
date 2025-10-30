@@ -14,7 +14,6 @@ class SearchResultsRepository {
     required String searchType,
     required int limit,
     required List<String> excludedHotelCodes,
-    required int pageKey,
   }) {
     return _remoteDataSource.fetchSearchResults(
       visitorToken: visitorToken,
@@ -22,7 +21,6 @@ class SearchResultsRepository {
       searchType: searchType,
       limit: limit,
       excludedHotelCodes: excludedHotelCodes,
-      pageKey: pageKey,
     );
   }
 }

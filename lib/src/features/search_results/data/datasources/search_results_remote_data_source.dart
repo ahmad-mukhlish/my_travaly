@@ -14,7 +14,6 @@ class SearchResultsRemoteDataSource {
     required String searchType,
     required int limit,
     required List<String> excludedHotelCodes,
-    required int pageKey,
   }) async {
     final payload = {
       'action': 'getSearchResultListOfHotels',
@@ -34,7 +33,7 @@ class SearchResultsRemoteDataSource {
           'limit': limit,
           'preloaderList': excludedHotelCodes,
           'currency': 'INR',
-          'rid': pageKey,
+          'rid': 0,
         },
       },
     };

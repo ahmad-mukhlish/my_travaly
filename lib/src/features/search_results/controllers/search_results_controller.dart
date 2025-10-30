@@ -52,19 +52,30 @@ class SearchResultsController extends GetxController {
       );
     }
 
+    if (pageKey > 0) {
+      pagingController.value = pagingController.value.copyWith(hasNextPage: false);
+      return <SearchResult>[];
+    }
 
     if (pageKey == 0) {
       _excludedHotelCodes.clear();
     }
 
     try {
+      final normalizedQueries = queries
+          .map((q) => q.trim())
+          .where((q) => q.isNotEmpty)
+          .toList(growable: false);
+      if (normalizedQueries.isEmpty) {
+        throw Exception('Missing search query.');
+      }
+
       final page = await _repository.fetchSearchResults(
         visitorToken: visitorToken,
-        queries: queries,
+        queries: normalizedQueries,
         searchType: _apiSearchType,
         limit: _pageSize,
         excludedHotelCodes: _excludedHotelCodes.toList(),
-        pageKey: pageKey,
       );
 
       _excludedHotelCodes.addAll(page.excludedHotelCodes);
