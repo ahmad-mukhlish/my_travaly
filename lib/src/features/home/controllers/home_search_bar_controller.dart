@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 import '../../login/controllers/login_controller.dart';
 import '../../login/model/login_model.dart';
-import '../data/models/search_auto_complete_result.dart' hide AutoCompleteCategoryResult;
+import '../data/models/search_auto_complete_result.dart';
 import '../data/repositories/home_repository.dart';
 import '../model/auto_complete_category.dart';
 import '../model/home_auto_complete_entry.dart';
@@ -16,7 +16,6 @@ class HomeSearchBarController extends GetxController {
   })  : _repository = repository,
         _loginController = loginController;
 
-  static final List<String> _autoCompleteDisplayOrder = AutoCompleteSearchType.displayOrderKeys;
   static final List<String> _autoCompleteSearchTypes = AutoCompleteSearchType.searchTypeKeys;
 
   final HomeRepository _repository;
@@ -85,52 +84,51 @@ class HomeSearchBarController extends GetxController {
     }
   }
 
+  /// Converts the backend auto-complete payload into the flat list that the
+  /// typeahead widget expects, keeping categories sorted by the configured
+  /// display order.
   List<HomeAutoCompleteEntry> _buildAutoCompleteEntries(
     SearchAutoCompleteResult result,
   ) {
     final entries = <HomeAutoCompleteEntry>[];
-    final orderedKeys = result.categories.keys.toList()
-      ..sort((a, b) {
-        final indexA = _autoCompleteDisplayOrder.indexOf(a);
-        final indexB = _autoCompleteDisplayOrder.indexOf(b);
-        if (indexA == -1 && indexB == -1) {
-          return a.compareTo(b);
-        }
-        if (indexA == -1) {
-          return 1;
-        }
-        if (indexB == -1) {
-          return -1;
-        }
-        return indexA.compareTo(indexB);
-      });
-
-    for (final key in orderedKeys) {
+    for (final key in result.categories.keys) {
       final category = result.categories[key];
-      if (category == null) {
-        continue;
-      }
-      if (!category.present || category.suggestions.isEmpty) {
-        continue;
-      }
-      final resolvedCategory = categoryFromKey(key);
+      if (category == null) continue;
+
+      entries.addAll(_entriesForCategory(key, category));
+    }
+    return entries;
+  }
+
+  /// Builds the header item and suggestion rows for a single category if it is
+  /// present and contains at least one suggestion.
+  List<HomeAutoCompleteEntry> _entriesForCategory(
+    String categoryKey,
+    AutoCompleteCategoryResult category,
+  ) {
+    if (!category.present || category.suggestions.isEmpty) {
+      return [];
+    }
+
+    final resolvedCategory = categoryFromKey(categoryKey);
+    final entries = <HomeAutoCompleteEntry>[
+      HomeAutoCompleteHeader(
+        category: resolvedCategory,
+        title: resolvedCategory.displayName,
+        count: category.numberOfResult,
+      ),
+    ];
+
+    for (final suggestion in category.suggestions) {
       entries.add(
-        HomeAutoCompleteHeader(
+        HomeAutoCompleteItem(
           category: resolvedCategory,
-          title: resolvedCategory.displayName,
-          count: category.numberOfResult,
+          categoryKey: categoryKey,
+          suggestion: suggestion,
         ),
       );
-      for (final suggestion in category.suggestions) {
-        entries.add(
-          HomeAutoCompleteItem(
-            category: resolvedCategory,
-            categoryKey: key,
-            suggestion: suggestion,
-          ),
-        );
-      }
     }
+
     return entries;
   }
 
