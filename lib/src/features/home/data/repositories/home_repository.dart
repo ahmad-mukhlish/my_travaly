@@ -2,8 +2,6 @@ import 'package:my_travaly/src/features/home/data/datasources/home_remote_data_s
 import 'package:my_travaly/src/features/home/data/models/property_model.dart';
 import 'package:my_travaly/src/features/home/data/models/search_auto_complete_result.dart';
 import 'package:my_travaly/src/features/home/model/auto_complete_search_type.dart';
-import 'package:my_travaly/src/features/home/model/property_search_type.dart';
-import 'package:my_travaly/src/features/home/model/search_popular_property_params.dart';
 
 class HomeRepository {
   const HomeRepository({
@@ -14,64 +12,18 @@ class HomeRepository {
 
   Future<List<Property>> getPopularStays({
     required String visitorToken,
-    required String searchType,
-    required Map<String, dynamic> searchInfo,
     String entityType = 'Any',
     int limit = 10,
     String currency = 'INR',
   }) {
     return _remoteDataSource.fetchPopularStays(
       visitorToken: visitorToken,
-      searchType: searchType,
-      searchTypeInfo: searchInfo,
+      searchType: AutoCompleteSearchType.random.key,
+      searchTypeInfo: {},
       entityType: entityType,
       limit: limit,
       currency: currency,
     );
-  }
-
-  SearchPopularStayParams buildSearchPopularStayParams(
-      PropertySearchType type,
-      String query,
-      ) {
-    if (query.isEmpty) {
-      return SearchPopularStayParams(
-        searchTypeKey: AutoCompleteSearchType.random.key,
-        searchInfo: {},
-      );
-    }
-
-    switch (type) {
-      case PropertySearchType.hotelName:
-        return SearchPopularStayParams(
-          searchTypeKey: AutoCompleteSearchType.random.key,
-          searchInfo: {
-            'keyword': query,
-            'propertyName': query,
-          },
-        );
-      case PropertySearchType.city:
-        return SearchPopularStayParams(
-          searchTypeKey: AutoCompleteSearchType.city.key,
-          searchInfo: {
-            'city': query,
-          },
-        );
-      case PropertySearchType.state:
-        return SearchPopularStayParams(
-          searchTypeKey: AutoCompleteSearchType.state.key,
-          searchInfo: {
-            'state': query,
-          },
-        );
-      case PropertySearchType.country:
-        return SearchPopularStayParams(
-          searchTypeKey: AutoCompleteSearchType.country.key,
-          searchInfo: {
-            'country': query,
-          },
-        );
-    }
   }
 
   Future<SearchAutoCompleteResult> searchAutoComplete({

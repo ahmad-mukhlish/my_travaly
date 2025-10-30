@@ -10,7 +10,7 @@ class SearchResultsRepository {
 
   Future<SearchResultsPage> fetchSearchResults({
     required String visitorToken,
-    required String query,
+    required List<String> queries,
     required String searchType,
     required int limit,
     required List<String> excludedHotelCodes,
@@ -18,7 +18,7 @@ class SearchResultsRepository {
   }) {
     return _remoteDataSource.fetchSearchResults(
       visitorToken: visitorToken,
-      query: query,
+      queries: queries,
       searchType: searchType,
       limit: limit,
       excludedHotelCodes: excludedHotelCodes,

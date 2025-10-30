@@ -2,7 +2,8 @@ enum PropertySearchType {
   hotelName(label: 'Hotel', apiValue: 'hotelNameSearch'),
   city(label: 'City', apiValue: 'citySearch'),
   state(label: 'State', apiValue: 'stateSearch'),
-  country(label: 'Country', apiValue: 'countrySearch');
+  country(label: 'Country', apiValue: 'countrySearch'),
+  street(label: 'Street', apiValue: 'streetSearch');
 
   final String label;
   final String apiValue;

@@ -16,18 +16,19 @@ class SearchResultsScreen extends GetView<SearchResultsController> {
         title: Text('Search Result Page'),
         automaticallyImplyLeading: false,
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(60),
+          preferredSize: const Size.fromHeight(80),
           child: Builder(
             builder: (context) => Padding(
-              padding: const EdgeInsets.only(bottom: 12),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
                   Text(
-                    'Keyword ${controller.title}',
+                    'Searching by ${controller.searchType.label.toLowerCase()}',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
+                  SizedBox(height: 16,),
                   Text(
-                    'Searching by ${controller.searchType.label.toLowerCase()}',
+                    controller.title,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],

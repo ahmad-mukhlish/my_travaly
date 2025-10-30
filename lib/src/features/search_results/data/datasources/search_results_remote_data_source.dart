@@ -10,7 +10,7 @@ class SearchResultsRemoteDataSource {
 
   Future<SearchResultsPage> fetchSearchResults({
     required String visitorToken,
-    required String query,
+    required List<String> queries,
     required String searchType,
     required int limit,
     required List<String> excludedHotelCodes,
@@ -26,7 +26,7 @@ class SearchResultsRemoteDataSource {
           'adults': 2,
           'children': 0,
           'searchType': searchType,
-          'searchQuery': [query],
+          'searchQuery': queries,
           'accommodation': const ['all'],
           'arrayOfExcludedSearchType': const <String>[],
           'highPrice': '3000000',

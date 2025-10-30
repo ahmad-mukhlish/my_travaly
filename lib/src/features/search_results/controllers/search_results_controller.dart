@@ -28,8 +28,8 @@ class SearchResultsController extends GetxController {
 
   PropertySearchType get searchType => _arguments.searchType;
   String get _apiSearchType => _arguments.customSearchType ?? _arguments.searchType.apiValue;
-  String get query => _arguments.query;
-  String get title => _arguments.title ?? query;
+  List<String> get queries => _arguments.queries;
+  String get title => _arguments.title ?? '';
 
   int? _getNextPageKey(PagingState<int, SearchResult> state) {
     if (!state.hasNextPage) {
@@ -52,9 +52,6 @@ class SearchResultsController extends GetxController {
       );
     }
 
-    if (query.trim().isEmpty) {
-      throw Exception('Missing search query.');
-    }
 
     if (pageKey == 0) {
       _excludedHotelCodes.clear();
@@ -63,7 +60,7 @@ class SearchResultsController extends GetxController {
     try {
       final page = await _repository.fetchSearchResults(
         visitorToken: visitorToken,
-        query: query,
+        queries: queries,
         searchType: _apiSearchType,
         limit: _pageSize,
         excludedHotelCodes: _excludedHotelCodes.toList(),
