@@ -14,7 +14,6 @@ class HomeSearchBarController extends GetxController {
     required LoginController loginController,
   })  : _repository = repository, _loginController = loginController;
 
-  static final List<String> _autoCompleteSearchTypes = AutoCompleteSearchType.searchTypeKeys;
 
   final HomeRepository _repository;
   final LoginController _loginController;
@@ -66,7 +65,7 @@ class HomeSearchBarController extends GetxController {
       final result = await _repository.searchAutoComplete(
         visitorToken: visitorToken,
         inputText: trimmed,
-        searchTypes: _autoCompleteSearchTypes,
+        searchTypes: AutoCompleteSearchType.searchTypeKeys,
       );
       autoCompleteResult.value = result;
       _cachedAutoCompleteEntries = _buildAutoCompleteEntries(result);

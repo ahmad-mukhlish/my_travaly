@@ -5,9 +5,11 @@ class SearchResultsArguments {
     required this.query,
     required this.searchType,
     this.customSearchType,
+    this.title,
   });
 
   final String query;
   final PropertySearchType searchType;
   final String? customSearchType;
+  final String? title;
 }

@@ -19,8 +19,7 @@ class SearchResultsController extends GetxController {
   final SearchResultsArguments _arguments;
   final LoginController _loginController = Get.find<LoginController>();
 
-  late final PagingController<int, SearchResult> pagingController =
-      PagingController<int, SearchResult>(
+  late final PagingController<int, SearchResult> pagingController = PagingController<int, SearchResult>(
     getNextPageKey: _getNextPageKey,
     fetchPage: _fetchPage,
   );
@@ -28,9 +27,9 @@ class SearchResultsController extends GetxController {
   final Set<String> _excludedHotelCodes = <String>{};
 
   PropertySearchType get searchType => _arguments.searchType;
-  String get _apiSearchType =>
-      _arguments.customSearchType ?? _arguments.searchType.apiValue;
+  String get _apiSearchType => _arguments.customSearchType ?? _arguments.searchType.apiValue;
   String get query => _arguments.query;
+  String get title => _arguments.title ?? query;
 
   int? _getNextPageKey(PagingState<int, SearchResult> state) {
     if (!state.hasNextPage) {

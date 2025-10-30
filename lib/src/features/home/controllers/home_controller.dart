@@ -100,13 +100,13 @@ class HomeController extends GetxController {
       return;
     }
     searchQuery.value = trimmed;
-    // Get.toNamed(
-    //   AppRoutes.searchResults,
-    //   arguments: SearchResultsArguments(
-    //     query: trimmed,
-    //     searchType: selectedSearchType.value,
-    //   ),
-    // );
+    Get.toNamed(
+      AppRoutes.searchResults,
+      arguments: SearchResultsArguments(
+        query: trimmed,
+        searchType: selectedSearchType.value,
+      ),
+    );
   }
 
   void onSearchTypeChanged(PropertySearchType type) {
@@ -149,6 +149,7 @@ class HomeController extends GetxController {
             query: propertyCode,
             searchType: selectedSearchType.value,
             customSearchType: searchType,
+            title: item.title
           ),
         );
         break;
