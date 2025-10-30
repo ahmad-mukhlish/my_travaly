@@ -9,6 +9,7 @@ import 'package:my_travaly/src/features/home/model/property_search_type.dart';
 import 'package:my_travaly/src/features/login/controllers/login_controller.dart';
 import 'package:my_travaly/src/features/login/model/login_model.dart';
 import 'package:my_travaly/src/features/search_results/models/search_results_arguments.dart';
+import 'package:my_travaly/src/features/search_results/models/search_results_filter.dart';
 import 'package:my_travaly/src/routes/app_routes.dart';
 
 
@@ -245,6 +246,7 @@ class HomeController extends GetxController {
         searchType: searchType,
         customSearchType: customSearchType,
         title: title,
+        initialFilter: SearchResultsFilter.defaults(),
       ),
     );
   }

@@ -14,22 +14,29 @@ class SearchResultsRemoteDataSource {
     required String searchType,
     required int limit,
     required List<String> excludedHotelCodes,
+    required DateTime checkIn,
+    required DateTime checkOut,
+    required int rooms,
+    required int adults,
+    required int children,
+    required int lowPrice,
+    required int highPrice,
   }) async {
     final payload = {
       'action': 'getSearchResultListOfHotels',
       'getSearchResultListOfHotels': {
         'searchCriteria': {
-          'checkIn': _defaultCheckIn,
-          'checkOut': _defaultCheckOut,
-          'rooms': 1,
-          'adults': 2,
-          'children': 0,
+          'checkIn': _formatDate(checkIn),
+          'checkOut': _formatDate(checkOut),
+          'rooms': rooms,
+          'adults': adults,
+          'children': children,
           'searchType': searchType,
           'searchQuery': queries,
           'accommodation': const ['all'],
-          'arrayOfExcludedSearchType': const <String>[],
-          'highPrice': '3000000',
-          'lowPrice': '0',
+          'arrayOfExcludedSearchType': [],
+          'highPrice': highPrice.toString(),
+          'lowPrice': lowPrice.toString(),
           'limit': limit,
           'preloaderList': excludedHotelCodes,
           'currency': 'INR',
@@ -40,7 +47,7 @@ class SearchResultsRemoteDataSource {
 
     final options = Options(
       headers: {
-        if (EnvironmentConfig.authToken.isNotEmpty)'authtoken': EnvironmentConfig.authToken,
+        if (EnvironmentConfig.authToken.isNotEmpty) 'authtoken': EnvironmentConfig.authToken,
         'visitortoken': visitorToken,
       },
     );
@@ -76,18 +83,6 @@ class SearchResultsRemoteDataSource {
       results: results,
       excludedHotelCodes: excludedCodes,
     );
-  }
-
-  static String get _defaultCheckIn {
-    final now = DateTime.now();
-    final checkIn = now.add(const Duration(days: 7));
-    return _formatDate(checkIn);
-  }
-
-  static String get _defaultCheckOut {
-    final now = DateTime.now();
-    final checkOut = now.add(const Duration(days: 8));
-    return _formatDate(checkOut);
   }
 
   static String _formatDate(DateTime date) {

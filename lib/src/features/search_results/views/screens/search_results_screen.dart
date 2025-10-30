@@ -15,72 +15,78 @@ class SearchResultsScreen extends GetView<SearchResultsController> {
       appBar: AppBar(
         title: Text('Search Result Page'),
         automaticallyImplyLeading: false,
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(80),
-          child: Builder(
-            builder: (context) => Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  Text(
-                    'Searching by ${controller.searchType.label.toLowerCase()}',
-                    style: Theme.of(context).textTheme.bodyMedium,
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Searching by ${controller.searchType.label.toLowerCase()}',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  controller.title,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                const SizedBox(height: 12),
+                SizedBox(
+                  width: 160,
+                  child: OutlinedButton.icon(
+                    onPressed: () => controller.showFiltersDialog(context),
+                    icon: const Icon(Icons.filter_alt_outlined),
+                    label: const Text('Filter Results'),
                   ),
-                  SizedBox(height: 16,),
-                  Text(
-                    controller.title,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 12),
+              ],
             ),
           ),
-        ),
-      ),
-      body: PagingListener<int, SearchResult>(
-        controller: controller.pagingController,
-        builder: (context, state, fetchNextPage) {
-          final theme = Theme.of(context);
-          return RefreshIndicator(
-            onRefresh: () async {
-              controller.pagingController.refresh();
-              controller.pagingController.fetchNextPage();
-            },
-            child: PagedListView<int, SearchResult>(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              state: state,
-              fetchNextPage: fetchNextPage,
-              builderDelegate: PagedChildBuilderDelegate<SearchResult>(
-                itemBuilder: (context, result, index) =>
-                    SearchResultCard(result: result),
-                firstPageProgressIndicatorBuilder: (_) =>
-                    const Center(child: CircularProgressIndicator()),
-                newPageProgressIndicatorBuilder: (_) =>
-                    const Center(child: CircularProgressIndicator()),
-                firstPageErrorIndicatorBuilder: (_) =>
-                    SearchResultsErrorIndicator(
-                  message:
-                      state.error?.toString() ?? 'Failed to load results.',
-                  onRetry: fetchNextPage,
-                ),
-                newPageErrorIndicatorBuilder: (_) =>
-                    SearchResultsErrorIndicator(
-                  message:
-                      state.error?.toString() ?? 'Failed to load more results.',
-                  onRetry: fetchNextPage,
-                ),
-                noItemsFoundIndicatorBuilder: (_) => Center(
-                  child: Text(
-                    'No properties found for "${controller.title}. Try refining your search.',
-                    style: theme.textTheme.bodyMedium,
-                    textAlign: TextAlign.center,
+          Expanded(
+            child: PagingListener<int, SearchResult>(
+              controller: controller.pagingController,
+              builder: (context, state, fetchNextPage) {
+                final theme = Theme.of(context);
+                return RefreshIndicator(
+                  onRefresh: controller.refreshResults,
+                  child: PagedListView<int, SearchResult>(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    state: state,
+                    fetchNextPage: fetchNextPage,
+                    builderDelegate: PagedChildBuilderDelegate<SearchResult>(
+                      itemBuilder: (context, result, index) => SearchResultCard(result: result),
+                      firstPageProgressIndicatorBuilder: (_) =>
+                          const Center(child: CircularProgressIndicator()),
+                      newPageProgressIndicatorBuilder: (_) =>
+                          const Center(child: CircularProgressIndicator()),
+                      firstPageErrorIndicatorBuilder: (_) => SearchResultsErrorIndicator(
+                        message: state.error?.toString() ?? 'Failed to load results.',
+                        onRetry: fetchNextPage,
+                      ),
+                      newPageErrorIndicatorBuilder: (_) => SearchResultsErrorIndicator(
+                        message: state.error?.toString() ?? 'Failed to load more results.',
+                        onRetry: fetchNextPage,
+                      ),
+                      noItemsFoundIndicatorBuilder: (_) => Center(
+                        child: Text(
+                          'No properties found for "${controller.title}". Try refining your search.',
+                          style: theme.textTheme.bodyMedium,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
+                );
+              },
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
+
 }

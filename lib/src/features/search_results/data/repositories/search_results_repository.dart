@@ -14,6 +14,13 @@ class SearchResultsRepository {
     required String searchType,
     required int limit,
     required List<String> excludedHotelCodes,
+    required DateTime checkIn,
+    required DateTime checkOut,
+    required int rooms,
+    required int adults,
+    required int children,
+    required int lowPrice,
+    required int highPrice,
   }) {
     return _remoteDataSource.fetchSearchResults(
       visitorToken: visitorToken,
@@ -21,6 +28,13 @@ class SearchResultsRepository {
       searchType: searchType,
       limit: limit,
       excludedHotelCodes: excludedHotelCodes,
+      checkIn: checkIn,
+      checkOut: checkOut,
+      rooms: rooms,
+      adults: adults,
+      children: children,
+      lowPrice: lowPrice,
+      highPrice: highPrice,
     );
   }
 }
