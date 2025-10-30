@@ -19,8 +19,6 @@ class HomeSearchBar extends StatelessWidget {
       children: [
         const SizedBox(height: 12),
         Obx(() {
-          final placeholder =
-              controller.selectedSearchType.value.placeholder;
           return Row(
             children: [
               Expanded(
@@ -36,7 +34,7 @@ class HomeSearchBar extends StatelessWidget {
                     return SearchBar(
                       controller: textController,
                       focusNode: focusNode,
-                      hintText: placeholder,
+                      hintText: "Search your next stay...",
                       leading: const Icon(Icons.search),
                       trailing: [
                         IconButton(

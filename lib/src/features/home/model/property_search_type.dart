@@ -1,42 +1,11 @@
-enum PropertySearchType { hotelName, city, state, country }
+enum PropertySearchType {
+  hotelName(label: 'Hotel', apiValue: 'hotelNameSearch'),
+  city(label: 'City', apiValue: 'citySearch'),
+  state(label: 'State', apiValue: 'stateSearch'),
+  country(label: 'Country', apiValue: 'countrySearch');
 
-extension PropertySearchTypeX on PropertySearchType {
-  String get label {
-    switch (this) {
-      case PropertySearchType.hotelName:
-        return 'Hotel';
-      case PropertySearchType.city:
-        return 'City';
-      case PropertySearchType.state:
-        return 'State';
-      case PropertySearchType.country:
-        return 'Country';
-    }
-  }
+  final String label;
+  final String apiValue;
 
-  String get placeholder {
-    switch (this) {
-      case PropertySearchType.hotelName:
-        return 'Search by hotel name';
-      case PropertySearchType.city:
-        return 'Search by city';
-      case PropertySearchType.state:
-        return 'Search by state';
-      case PropertySearchType.country:
-        return 'Search by country';
-    }
-  }
-
-  String get apiValue {
-    switch (this) {
-      case PropertySearchType.hotelName:
-        return 'hotelNameSearch';
-      case PropertySearchType.city:
-        return 'citySearch';
-      case PropertySearchType.state:
-        return 'stateSearch';
-      case PropertySearchType.country:
-        return 'countrySearch';
-    }
-  }
+  const PropertySearchType({required this.label, required this.apiValue});
 }
