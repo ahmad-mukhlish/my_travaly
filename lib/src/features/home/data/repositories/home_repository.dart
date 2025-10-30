@@ -1,9 +1,9 @@
-import '../../model/auto_complete_search_type.dart';
-import '../../model/property_search_type.dart';
-import '../../model/search_popular_property_params.dart';
-import '../datasources/home_remote_data_source.dart';
-import '../models/property_model.dart';
-import '../models/search_auto_complete_result.dart';
+import 'package:my_travaly/src/features/home/data/datasources/home_remote_data_source.dart';
+import 'package:my_travaly/src/features/home/data/models/property_model.dart';
+import 'package:my_travaly/src/features/home/data/models/search_auto_complete_result.dart';
+import 'package:my_travaly/src/features/home/model/auto_complete_search_type.dart';
+import 'package:my_travaly/src/features/home/model/property_search_type.dart';
+import 'package:my_travaly/src/features/home/model/search_popular_property_params.dart';
 
 class HomeRepository {
   const HomeRepository({

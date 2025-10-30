@@ -1,16 +1,15 @@
 import 'package:get/get.dart';
-
+import 'package:my_travaly/src/features/login/controllers/login_controller.dart';
 import 'package:my_travaly/src/features/login/data/datasources/login_remote_data_source.dart';
 import 'package:my_travaly/src/features/login/data/repositories/login_repository.dart';
-
-import '../controllers/login_controller.dart';
+import 'package:my_travaly/src/services/network/api_service.dart';
 
 class LoginBinding extends Bindings {
   @override
   void dependencies() {
     if (!Get.isRegistered<LoginRemoteDataSource>()) {
       Get.lazyPut<LoginRemoteDataSource>(
-        () => LoginRemoteDataSource(),
+        () => LoginRemoteDataSource(apiService: Get.find<ApiService>()),
       );
     }
 

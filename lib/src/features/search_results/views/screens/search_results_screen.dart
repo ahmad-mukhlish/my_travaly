@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-
-import '../../controllers/search_results_controller.dart';
-import '../../data/models/search_result_model.dart';
+import 'package:my_travaly/src/features/search_results/controllers/search_results_controller.dart';
+import 'package:my_travaly/src/features/search_results/data/models/search_result_model.dart';
 
 class SearchResultsScreen extends GetView<SearchResultsController> {
   const SearchResultsScreen({super.key});

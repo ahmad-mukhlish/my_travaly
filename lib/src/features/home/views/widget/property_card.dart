@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../data/models/property_model.dart';
+import 'package:my_travaly/src/features/home/data/models/property_model.dart';
 
 class PropertyCard extends StatelessWidget {
   const PropertyCard({super.key, required this.property});

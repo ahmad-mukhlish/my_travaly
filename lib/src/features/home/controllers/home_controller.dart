@@ -1,20 +1,19 @@
 import 'package:get/get.dart';
-import 'package:my_travaly/src/features/home/model/search_popular_property_params.dart' show SearchPopularStayParams;
-import '../../login/controllers/login_controller.dart';
-import '../../login/model/login_model.dart';
-import '../data/models/property_model.dart';
-import '../data/repositories/home_repository.dart';
-import '../model/auto_complete_category.dart';
-import '../model/entity_type.dart';
-import '../model/property_search_type.dart';
-import '../../search_results/models/search_results_arguments.dart';
+import 'package:my_travaly/src/features/home/data/models/property_model.dart';
+import 'package:my_travaly/src/features/home/data/repositories/home_repository.dart';
+import 'package:my_travaly/src/features/home/model/auto_complete_category.dart';
+import 'package:my_travaly/src/features/home/model/auto_complete_search_type.dart';
+import 'package:my_travaly/src/features/home/model/entity_type.dart';
+import 'package:my_travaly/src/features/home/model/home_auto_complete_entry.dart';
+import 'package:my_travaly/src/features/home/model/property_search_type.dart';
+import 'package:my_travaly/src/features/home/model/search_popular_property_params.dart';
+import 'package:my_travaly/src/features/login/controllers/login_controller.dart';
+import 'package:my_travaly/src/features/login/model/login_model.dart';
+import 'package:my_travaly/src/features/search_results/models/search_results_arguments.dart';
 import 'package:my_travaly/src/routes/app_routes.dart';
-import '../model/home_auto_complete_entry.dart';
-import '../model/auto_complete_search_type.dart';
 
 class HomeController extends GetxController {
-  HomeController({required HomeRepository repository})
-      : _repository = repository;
+  HomeController({required HomeRepository repository}) : _repository = repository;
 
   final HomeRepository _repository;
 

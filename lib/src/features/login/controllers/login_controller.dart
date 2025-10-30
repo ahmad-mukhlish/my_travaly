@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -7,23 +5,20 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_travaly/src/features/login/data/repositories/login_repository.dart';
 import 'package:my_travaly/src/features/login/model/device_register.dart';
+import 'package:my_travaly/src/features/login/model/login_model.dart';
 import 'package:my_travaly/src/routes/app_routes.dart';
 import 'package:my_travaly/src/services/auth/auth_storage_service.dart';
 
-import '../model/login_model.dart';
-
 class LoginController extends GetxController {
-  LoginController({LoginRepository? loginRepository})
-      : _loginRepository = loginRepository ?? Get.find<LoginRepository>();
+  LoginController({required LoginRepository loginRepository}) : _loginRepository = loginRepository;
 
   final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   final LoginRepository _loginRepository;
 
   final RxBool isSigningIn = false.obs;
   final Rxn<LoginUser> user = Rxn<LoginUser>();
-
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   bool isInitialize = false;
 

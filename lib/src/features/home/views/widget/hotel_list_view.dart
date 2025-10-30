@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../controllers/home_controller.dart';
+import 'package:my_travaly/src/features/home/controllers/home_controller.dart';
 import 'property_card.dart';
 
 class HotelListView extends StatelessWidget {

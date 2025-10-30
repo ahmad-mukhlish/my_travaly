@@ -6,12 +6,10 @@ import '../models/property_model.dart';
 import '../models/search_auto_complete_result.dart';
 
 class HomeRemoteDataSource {
-  HomeRemoteDataSource({ApiService? apiService})
-      : _apiService = apiService ?? ApiService.to;
+  HomeRemoteDataSource({required ApiService apiService})
+      : _apiService = apiService;
 
   final ApiService _apiService;
-
-  static const String _propertyPath = '';
 
   Future<List<Property>> fetchPopularStays({
     required String visitorToken,
@@ -21,7 +19,7 @@ class HomeRemoteDataSource {
     int limit = 10,
     String currency = 'INR',
   }) async {
-    final payload = <String, dynamic>{
+    final payload = {
       'action': 'popularStay',
       'popularStay': {
         'limit': limit,
@@ -35,29 +33,23 @@ class HomeRemoteDataSource {
     };
 
     final options = Options(
-      headers: <String, dynamic>{
-        if (EnvironmentConfig.authToken.isNotEmpty)
-          'authtoken': EnvironmentConfig.authToken,
+      headers: {
+        if (EnvironmentConfig.authToken.isNotEmpty)'authtoken': EnvironmentConfig.authToken,
         'visitortoken': visitorToken,
       },
     );
 
     final response = await _apiService.post<Map<String, dynamic>>(
-      _propertyPath,
       data: payload,
       options: options,
     );
 
     final body = response.data;
-    if (body == null) {
-      return const <Property>[];
-    }
-
+    if (body == null) return [];
 
     final list = body['data'];
-    if (list is! List) {
-      return const <Property>[];
-    }
+    if (list is! List) return [];
+
     return list
         .whereType<Map<String, dynamic>>()
         .map(Property.fromJson)
@@ -70,7 +62,7 @@ class HomeRemoteDataSource {
     required List<String> searchTypes,
     int limit = 10,
   }) async {
-    final payload = <String, dynamic>{
+    final payload = {
       'action': 'searchAutoComplete',
       'searchAutoComplete': {
         'inputText': inputText,
@@ -80,15 +72,13 @@ class HomeRemoteDataSource {
     };
 
     final options = Options(
-      headers: <String, dynamic>{
-        if (EnvironmentConfig.authToken.isNotEmpty)
-          'authtoken': EnvironmentConfig.authToken,
+      headers: {
+        if (EnvironmentConfig.authToken.isNotEmpty)'authtoken': EnvironmentConfig.authToken,
         'visitortoken': visitorToken,
       },
     );
 
     final response = await _apiService.post<Map<String, dynamic>>(
-      _propertyPath,
       data: payload,
       options: options,
     );

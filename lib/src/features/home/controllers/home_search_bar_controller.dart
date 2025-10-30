@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../login/controllers/login_controller.dart';
-import '../../login/model/login_model.dart';
-import '../data/models/search_auto_complete_result.dart';
-import '../data/repositories/home_repository.dart';
-import '../model/auto_complete_category.dart';
-import '../model/home_auto_complete_entry.dart';
-import '../model/auto_complete_search_type.dart';
+import 'package:my_travaly/src/features/home/data/models/search_auto_complete_result.dart';
+import 'package:my_travaly/src/features/home/data/repositories/home_repository.dart';
+import 'package:my_travaly/src/features/home/model/auto_complete_category.dart';
+import 'package:my_travaly/src/features/home/model/auto_complete_search_type.dart';
+import 'package:my_travaly/src/features/home/model/home_auto_complete_entry.dart';
+import 'package:my_travaly/src/features/login/controllers/login_controller.dart';
+import 'package:my_travaly/src/features/login/model/login_model.dart';
 
 class HomeSearchBarController extends GetxController {
   HomeSearchBarController({
     required HomeRepository repository,
     required LoginController loginController,
-  })  : _repository = repository,
-        _loginController = loginController;
+  })  : _repository = repository, _loginController = loginController;
 
   static final List<String> _autoCompleteSearchTypes = AutoCompleteSearchType.searchTypeKeys;
 
@@ -124,7 +122,6 @@ class HomeSearchBarController extends GetxController {
 
     return entries;
   }
-
 
   @override
   void onClose() {

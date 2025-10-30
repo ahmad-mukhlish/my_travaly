@@ -3,8 +3,7 @@ import 'package:my_travaly/src/features/login/data/models/register_device_respon
 import 'package:my_travaly/src/features/login/model/device_register.dart';
 
 class LoginRepository {
-  const LoginRepository({required LoginRemoteDataSource remoteDataSource})
-      : _remoteDataSource = remoteDataSource;
+  const LoginRepository({required LoginRemoteDataSource remoteDataSource}) : _remoteDataSource = remoteDataSource;
 
   final LoginRemoteDataSource _remoteDataSource;
 

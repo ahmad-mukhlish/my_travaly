@@ -1,17 +1,17 @@
 import 'package:get/get.dart';
-
-import '../../home/model/property_search_type.dart';
-import '../controllers/search_results_controller.dart';
-import '../data/datasources/search_results_remote_data_source.dart';
-import '../data/repositories/search_results_repository.dart';
-import '../models/search_results_arguments.dart';
+import 'package:my_travaly/src/features/home/model/property_search_type.dart';
+import 'package:my_travaly/src/features/search_results/controllers/search_results_controller.dart';
+import 'package:my_travaly/src/features/search_results/data/datasources/search_results_remote_data_source.dart';
+import 'package:my_travaly/src/features/search_results/data/repositories/search_results_repository.dart';
+import 'package:my_travaly/src/features/search_results/models/search_results_arguments.dart';
+import 'package:my_travaly/src/services/network/api_service.dart';
 
 class SearchResultsBinding extends Bindings {
   @override
   void dependencies() {
     if (!Get.isRegistered<SearchResultsRemoteDataSource>()) {
       Get.lazyPut<SearchResultsRemoteDataSource>(
-        () => SearchResultsRemoteDataSource(),
+        () => SearchResultsRemoteDataSource(apiService: Get.find<ApiService>()),
       );
     }
 

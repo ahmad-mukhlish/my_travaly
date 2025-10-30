@@ -1,8 +1,7 @@
 import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide Response;
-
-import '../../config/environment_config.dart';
+import 'package:my_travaly/src/config/environment_config.dart';
 
 class ApiService extends GetxService {
   ApiService({Dio? dio}) : _dio = dio ?? Dio(_defaultOptions);
@@ -20,15 +19,13 @@ class ApiService extends GetxService {
 
   Dio get client => _dio;
 
-  static ApiService get to => Get.find<ApiService>();
-
   Future<ApiService> init() async {
     _configureInterceptors();
     return this;
   }
 
-  Future<Response<T>> get<T>(
-    String path, {
+  Future<Response<T>> get<T>({
+    String path = '',
     Map<String, dynamic>? queryParameters,
     Options? options,
     CancelToken? cancelToken,
@@ -43,8 +40,8 @@ class ApiService extends GetxService {
     );
   }
 
-  Future<Response<T>> post<T>(
-    String path, {
+  Future<Response<T>> post<T>({
+    String path = '',
     Object? data,
     Map<String, dynamic>? queryParameters,
     Options? options,
@@ -63,8 +60,8 @@ class ApiService extends GetxService {
     );
   }
 
-  Future<Response<T>> put<T>(
-    String path, {
+  Future<Response<T>> put<T>({
+    String path = '',
     Object? data,
     Map<String, dynamic>? queryParameters,
     Options? options,
@@ -83,8 +80,8 @@ class ApiService extends GetxService {
     );
   }
 
-  Future<Response<T>> delete<T>(
-    String path, {
+  Future<Response<T>> delete<T>({
+    String path = '',
     Object? data,
     Map<String, dynamic>? queryParameters,
     Options? options,

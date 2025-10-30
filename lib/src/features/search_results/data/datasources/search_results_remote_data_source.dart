@@ -1,16 +1,12 @@
 import 'package:dio/dio.dart';
-
-import '../../../../config/environment_config.dart';
-import '../../../../services/network/api_service.dart';
-import '../models/search_result_model.dart';
+import 'package:my_travaly/src/config/environment_config.dart';
+import 'package:my_travaly/src/features/search_results/data/models/search_result_model.dart';
+import 'package:my_travaly/src/services/network/api_service.dart';
 
 class SearchResultsRemoteDataSource {
-  SearchResultsRemoteDataSource({ApiService? apiService})
-      : _apiService = apiService ?? ApiService.to;
+  SearchResultsRemoteDataSource({required ApiService apiService}) : _apiService = apiService;
 
   final ApiService _apiService;
-
-  static const String _searchResultsPath = '';
 
   Future<SearchResultsPage> fetchSearchResults({
     required String visitorToken,
@@ -20,7 +16,7 @@ class SearchResultsRemoteDataSource {
     required List<String> excludedHotelCodes,
     required int pageKey,
   }) async {
-    final payload = <String, dynamic>{
+    final payload = {
       'action': 'getSearchResultListOfHotels',
       'getSearchResultListOfHotels': {
         'searchCriteria': {
@@ -44,22 +40,20 @@ class SearchResultsRemoteDataSource {
     };
 
     final options = Options(
-      headers: <String, dynamic>{
-        if (EnvironmentConfig.authToken.isNotEmpty)
-          'authtoken': EnvironmentConfig.authToken,
+      headers: {
+        if (EnvironmentConfig.authToken.isNotEmpty)'authtoken': EnvironmentConfig.authToken,
         'visitortoken': visitorToken,
       },
     );
 
     final response = await _apiService.post<Map<String, dynamic>>(
-      _searchResultsPath,
       data: payload,
       options: options,
     );
 
     final body = response.data;
     if (body == null) {
-      return const SearchResultsPage(results: <SearchResult>[], excludedHotelCodes: <String>[]);
+      return const SearchResultsPage(results: [], excludedHotelCodes: []);
     }
 
     final data = body['data'] as Map<String, dynamic>? ?? const {};

@@ -1,11 +1,10 @@
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-
-import '../../home/model/property_search_type.dart';
-import '../../login/controllers/login_controller.dart';
-import '../data/models/search_result_model.dart';
-import '../data/repositories/search_results_repository.dart';
-import '../models/search_results_arguments.dart';
+import 'package:my_travaly/src/features/home/model/property_search_type.dart';
+import 'package:my_travaly/src/features/login/controllers/login_controller.dart';
+import 'package:my_travaly/src/features/search_results/data/models/search_result_model.dart';
+import 'package:my_travaly/src/features/search_results/data/repositories/search_results_repository.dart';
+import 'package:my_travaly/src/features/search_results/models/search_results_arguments.dart';
 
 class SearchResultsController extends GetxController {
   SearchResultsController({

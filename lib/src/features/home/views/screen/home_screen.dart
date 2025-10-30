@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../controllers/home_controller.dart';
-import '../../controllers/home_search_bar_controller.dart';
-import '../widget/home_search_bar.dart';
-import '../widget/hotel_list_view.dart';
-import '../widget/user_view.dart';
-import '../../model/entity_type.dart';
+import 'package:my_travaly/src/features/home/controllers/home_controller.dart';
+import 'package:my_travaly/src/features/home/controllers/home_search_bar_controller.dart';
+import 'package:my_travaly/src/features/home/model/entity_type.dart';
+import 'package:my_travaly/src/features/home/views/widget/home_search_bar.dart';
+import 'package:my_travaly/src/features/home/views/widget/hotel_list_view.dart';
+import 'package:my_travaly/src/features/home/views/widget/user_view.dart';
 
 class HomeScreen extends GetView<HomeController> {
   const HomeScreen({super.key});

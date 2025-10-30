@@ -5,30 +5,25 @@ import 'package:my_travaly/src/features/login/model/device_register.dart';
 import 'package:my_travaly/src/services/network/api_service.dart';
 
 class LoginRemoteDataSource {
-  LoginRemoteDataSource({ApiService? apiService})
-      : _apiService = apiService ?? ApiService.to;
+  LoginRemoteDataSource({required ApiService apiService}) : _apiService = apiService;
 
   final ApiService _apiService;
-
-  static const String _registerDevicePath = '';
 
   Future<RegisterDeviceResponse> registerDevice(
     DeviceRegister deviceRegister,
   ) async {
-    final payload = <String, dynamic>{
+    final payload = {
       'action': 'deviceRegister',
       'deviceRegister': deviceRegister.toJson(),
     };
 
     final options = Options(
-      headers: <String, dynamic>{
-        if (EnvironmentConfig.authToken.isNotEmpty)
-          'authtoken': EnvironmentConfig.authToken,
+      headers: {
+        if (EnvironmentConfig.authToken.isNotEmpty)'authtoken': EnvironmentConfig.authToken,
       },
     );
 
     final response = await _apiService.post<Map<String, dynamic>>(
-      _registerDevicePath,
       data: payload,
       options: options,
     );
@@ -37,7 +32,6 @@ class LoginRemoteDataSource {
     if (body == null) {
       throw const FormatException('Empty register device response');
     }
-
 
     final registerDeviceResponse = RegisterDeviceResponse.fromJson(body);
 

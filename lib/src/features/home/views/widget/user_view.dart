@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../login/model/login_model.dart';
+import 'package:my_travaly/src/features/login/model/login_model.dart';
 
 class UserView extends StatelessWidget {
   const UserView({super.key, required this.user});

@@ -1,5 +1,5 @@
-import '../datasources/search_results_remote_data_source.dart';
-import '../models/search_result_model.dart';
+import 'package:my_travaly/src/features/search_results/data/datasources/search_results_remote_data_source.dart';
+import 'package:my_travaly/src/features/search_results/data/models/search_result_model.dart';
 
 class SearchResultsRepository {
   const SearchResultsRepository({

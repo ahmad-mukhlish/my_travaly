@@ -1,4 +1,4 @@
-import '../../home/model/property_search_type.dart';
+import 'package:my_travaly/src/features/home/model/property_search_type.dart';
 
 class SearchResultsArguments {
   const SearchResultsArguments({

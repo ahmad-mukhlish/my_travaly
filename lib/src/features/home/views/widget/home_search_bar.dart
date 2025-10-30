@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-
-import '../../controllers/home_search_bar_controller.dart';
-import '../../model/home_auto_complete_entry.dart';
+import 'package:my_travaly/src/features/home/controllers/home_search_bar_controller.dart';
+import 'package:my_travaly/src/features/home/model/home_auto_complete_entry.dart';
 
 class HomeSearchBar extends StatelessWidget {
   const HomeSearchBar({
