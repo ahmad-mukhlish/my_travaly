@@ -1,3 +1,6 @@
+import '../../model/auto_complete_search_type.dart';
+import '../../model/property_search_type.dart';
+import '../../model/search_popular_property_params.dart';
 import '../datasources/home_remote_data_source.dart';
 import '../models/property_model.dart';
 import '../models/search_auto_complete_result.dart';
@@ -25,6 +28,50 @@ class HomeRepository {
       limit: limit,
       currency: currency,
     );
+  }
+
+  SearchPopularPropertyParams buildSearchParams(
+      PropertySearchType type,
+      String query,
+      ) {
+    if (query.isEmpty) {
+      return SearchPopularPropertyParams(
+        searchTypeKey: AutoCompleteSearchType.random.key,
+        searchInfo: {},
+      );
+    }
+
+    switch (type) {
+      case PropertySearchType.hotelName:
+        return SearchPopularPropertyParams(
+          searchTypeKey: AutoCompleteSearchType.random.key,
+          searchInfo: {
+            'keyword': query,
+            'propertyName': query,
+          },
+        );
+      case PropertySearchType.city:
+        return SearchPopularPropertyParams(
+          searchTypeKey: AutoCompleteSearchType.city.key,
+          searchInfo: {
+            'city': query,
+          },
+        );
+      case PropertySearchType.state:
+        return SearchPopularPropertyParams(
+          searchTypeKey: AutoCompleteSearchType.state.key,
+          searchInfo: {
+            'state': query,
+          },
+        );
+      case PropertySearchType.country:
+        return SearchPopularPropertyParams(
+          searchTypeKey: AutoCompleteSearchType.country.key,
+          searchInfo: {
+            'country': query,
+          },
+        );
+    }
   }
 
   Future<SearchAutoCompleteResult> searchAutoComplete({

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:my_travaly/src/features/home/model/search_popular_property_params.dart' show SearchPopularPropertyParams;
 import '../../login/controllers/login_controller.dart';
 import '../../login/model/login_model.dart';
 import '../data/models/property_model.dart';
@@ -50,36 +51,25 @@ class HomeController extends GetxController {
       return;
     }
 
-    final searchInput = (query ?? searchQuery.value).trim();
-    final effectiveQuery = searchInput.isEmpty ? '' : searchInput;
-
+    final rawQuery = query ?? searchQuery.value;
+    final effectiveQuery = rawQuery.trim();
     searchQuery.value = effectiveQuery;
-    final EntityType nextEntityType = entityType ?? selectedEntityType.value;
-    if (selectedEntityType.value != nextEntityType) {
-      selectedEntityType.value = nextEntityType;
-    }
 
-    final PropertySearchType effectiveSearchType =
-        searchTypeOverride ?? selectedSearchType.value;
-    if (searchTypeOverride != null &&
-        selectedSearchType.value != searchTypeOverride) {
-      selectedSearchType.value = searchTypeOverride;
-    }
+    final EntityType nextEntityType = entityType ?? selectedEntityType.value;
+    if (selectedEntityType.value != nextEntityType) selectedEntityType.value = nextEntityType;
+
+    final PropertySearchType effectiveSearchType = searchTypeOverride ?? selectedSearchType.value;
+    if (searchTypeOverride != null && selectedSearchType.value != searchTypeOverride) selectedSearchType.value = searchTypeOverride;
 
     String searchTypeKey;
     Map<String, dynamic> searchInfo;
     if (searchInfoOverride != null && searchTypeKeyOverride != null) {
       searchTypeKey = searchTypeKeyOverride;
-      searchInfo = searchInfoOverride.map((key, value) {
-        if (value is String) {
-          return MapEntry(key, value.trim());
-        }
-        return MapEntry(key, value);
-      });
+      searchInfo = searchInfoOverride;
     } else {
-      final tuple = _buildSearchParams(effectiveSearchType, effectiveQuery);
-      searchTypeKey = tuple.$1;
-      searchInfo = tuple.$2;
+      final SearchPopularPropertyParams params = _repository.buildSearchParams(effectiveSearchType, effectiveQuery);
+      searchTypeKey = params.searchTypeKey;
+      searchInfo = params.searchInfo;
     }
 
     isLoading.value = true;
@@ -98,48 +88,6 @@ class HomeController extends GetxController {
       properties.clear();
     } finally {
       isLoading.value = false;
-    }
-  }
-
-  (String, Map<String, dynamic>) _buildSearchParams(
-    PropertySearchType type,
-    String query,
-  ) {
-    final trimmedQuery = query.trim();
-    if (trimmedQuery.isEmpty) {
-      return (AutoCompleteSearchType.random.key, const {});
-    }
-
-    switch (type) {
-      case PropertySearchType.hotelName:
-        return (
-          AutoCompleteSearchType.random.key,
-          {
-            'keyword': trimmedQuery,
-            'propertyName': trimmedQuery,
-          },
-        );
-      case PropertySearchType.city:
-        return (
-          AutoCompleteSearchType.city.key,
-          {
-            'city': trimmedQuery,
-          },
-        );
-      case PropertySearchType.state:
-        return (
-          AutoCompleteSearchType.state.key,
-          {
-            'state': trimmedQuery,
-          },
-        );
-      case PropertySearchType.country:
-        return (
-          AutoCompleteSearchType.country.key,
-          {
-            'country': trimmedQuery,
-          },
-        );
     }
   }
 
