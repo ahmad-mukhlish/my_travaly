@@ -59,7 +59,10 @@ class HotelListView extends StatelessWidget {
           separatorBuilder: (_, __) => const SizedBox(height: 12),
           itemBuilder: (context, index) {
             final property = properties[index];
-            return PropertyCard(property: property);
+            return PropertyCard(
+              property: property,
+              controller: controller,
+            );
           },
         ),
       );

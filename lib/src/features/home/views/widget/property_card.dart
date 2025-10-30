@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:my_travaly/src/features/home/controllers/home_controller.dart';
 import 'package:my_travaly/src/features/home/data/models/property_model.dart';
 
 class PropertyCard extends StatelessWidget {
-  const PropertyCard({super.key, required this.property});
+  const PropertyCard({
+    super.key,
+    required this.property,
+    required this.controller,
+  });
 
   final Property property;
+  final HomeController controller;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      clipBehavior: Clip.antiAlias,
-      child: Column(
+    return InkWell(
+      onTap: () => controller.handlePropertyTap(property),
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        clipBehavior: Clip.antiAlias,
+        child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (property.propertyImage.isNotEmpty)
@@ -97,6 +105,7 @@ class PropertyCard extends StatelessWidget {
             ),
           ),
         ],
+        ),
       ),
     );
   }

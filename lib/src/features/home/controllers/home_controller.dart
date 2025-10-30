@@ -249,6 +249,19 @@ class HomeController extends GetxController {
     );
   }
 
+  void handlePropertyTap(Property property) {
+    if (property.propertyCode.isEmpty) {
+      return;
+    }
+
+    navigateToSearchResults(
+      queries: <String>[property.propertyCode],
+      searchType: PropertySearchType.hotelName,
+      customSearchType: 'hotelIdSearch',
+      title: property.propertyName,
+    );
+  }
+
   void onSearchTypeChanged(PropertySearchType type) {
     selectedSearchType.value = type;
     fetchPopularStay();
