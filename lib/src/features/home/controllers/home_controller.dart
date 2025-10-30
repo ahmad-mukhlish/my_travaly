@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:my_travaly/src/features/home/model/search_popular_property_params.dart' show SearchPopularPropertyParams;
+import 'package:my_travaly/src/features/home/model/search_popular_property_params.dart' show SearchPopularStayParams;
 import '../../login/controllers/login_controller.dart';
 import '../../login/model/login_model.dart';
 import '../data/models/property_model.dart';
@@ -67,7 +67,7 @@ class HomeController extends GetxController {
       searchTypeKey = searchTypeKeyOverride;
       searchInfo = searchInfoOverride;
     } else {
-      final SearchPopularPropertyParams params = _repository.buildSearchParams(effectiveSearchType, effectiveQuery);
+      final SearchPopularStayParams params = _repository.buildSearchPopularStayParams(effectiveSearchType, effectiveQuery);
       searchTypeKey = params.searchTypeKey;
       searchInfo = params.searchInfo;
     }
@@ -76,7 +76,7 @@ class HomeController extends GetxController {
     errorMessage.value = '';
 
     try {
-      final fetched = await _repository.getProperties(
+      final fetched = await _repository.getPopularStays(
         visitorToken: visitorToken,
         searchType: searchTypeKey,
         searchInfo: searchInfo,

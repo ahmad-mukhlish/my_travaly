@@ -1,5 +1,5 @@
-class SearchPopularPropertyParams {
-  const SearchPopularPropertyParams({
+class SearchPopularStayParams {
+  const SearchPopularStayParams({
     required this.searchTypeKey,
     required this.searchInfo,
   });

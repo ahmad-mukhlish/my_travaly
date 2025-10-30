@@ -12,7 +12,7 @@ class HomeRepository {
 
   final HomeRemoteDataSource _remoteDataSource;
 
-  Future<List<Property>> getProperties({
+  Future<List<Property>> getPopularStays({
     required String visitorToken,
     required String searchType,
     required Map<String, dynamic> searchInfo,
@@ -20,7 +20,7 @@ class HomeRepository {
     int limit = 10,
     String currency = 'INR',
   }) {
-    return _remoteDataSource.fetchProperties(
+    return _remoteDataSource.fetchPopularStays(
       visitorToken: visitorToken,
       searchType: searchType,
       searchTypeInfo: searchInfo,
@@ -30,12 +30,12 @@ class HomeRepository {
     );
   }
 
-  SearchPopularPropertyParams buildSearchParams(
+  SearchPopularStayParams buildSearchPopularStayParams(
       PropertySearchType type,
       String query,
       ) {
     if (query.isEmpty) {
-      return SearchPopularPropertyParams(
+      return SearchPopularStayParams(
         searchTypeKey: AutoCompleteSearchType.random.key,
         searchInfo: {},
       );
@@ -43,7 +43,7 @@ class HomeRepository {
 
     switch (type) {
       case PropertySearchType.hotelName:
-        return SearchPopularPropertyParams(
+        return SearchPopularStayParams(
           searchTypeKey: AutoCompleteSearchType.random.key,
           searchInfo: {
             'keyword': query,
@@ -51,21 +51,21 @@ class HomeRepository {
           },
         );
       case PropertySearchType.city:
-        return SearchPopularPropertyParams(
+        return SearchPopularStayParams(
           searchTypeKey: AutoCompleteSearchType.city.key,
           searchInfo: {
             'city': query,
           },
         );
       case PropertySearchType.state:
-        return SearchPopularPropertyParams(
+        return SearchPopularStayParams(
           searchTypeKey: AutoCompleteSearchType.state.key,
           searchInfo: {
             'state': query,
           },
         );
       case PropertySearchType.country:
-        return SearchPopularPropertyParams(
+        return SearchPopularStayParams(
           searchTypeKey: AutoCompleteSearchType.country.key,
           searchInfo: {
             'country': query,

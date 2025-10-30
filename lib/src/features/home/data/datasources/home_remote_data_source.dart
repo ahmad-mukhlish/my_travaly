@@ -13,7 +13,7 @@ class HomeRemoteDataSource {
 
   static const String _propertyPath = '';
 
-  Future<List<Property>> fetchProperties({
+  Future<List<Property>> fetchPopularStays({
     required String visitorToken,
     required String searchType,
     required Map<String, dynamic> searchTypeInfo,
