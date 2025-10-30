@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:get/get.dart';
-import 'package:my_travaly/src/features/home/model/property_search_type.dart';
 
 import '../../controllers/home_controller.dart';
 import '../../model/auto_complete_entry.dart';
@@ -18,8 +16,7 @@ class HomeSearchBar extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 12),
-        Obx(() {
-          return Row(
+        Row(
             children: [
               Expanded(
                 child: TypeAheadField<HomeAutoCompleteEntry>(
@@ -46,7 +43,7 @@ class HomeSearchBar extends StatelessWidget {
                           tooltip: 'Clear search',
                         ),
                         IconButton(
-                          onPressed: () => controller.fetchProperties(
+                          onPressed: () => controller.fetchPopularStay(
                             query: textController.text,
                           ),
                           icon: const Icon(Icons.refresh),
@@ -158,8 +155,7 @@ class HomeSearchBar extends StatelessWidget {
                 ),
               ),
             ],
-          );
-        }),
+          ),
       ],
     );
   }

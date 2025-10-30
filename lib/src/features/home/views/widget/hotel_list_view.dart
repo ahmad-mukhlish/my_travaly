@@ -35,7 +35,7 @@ class HotelListView extends StatelessWidget {
       final properties = controller.properties;
       if (properties.isEmpty) {
         return RefreshIndicator(
-          onRefresh: () => controller.fetchProperties(),
+          onRefresh: () => controller.fetchPopularStay(),
           child: ListView(
             physics: const AlwaysScrollableScrollPhysics(),
             children: [
@@ -53,7 +53,7 @@ class HotelListView extends StatelessWidget {
         );
       }
       return RefreshIndicator(
-        onRefresh: () => controller.fetchProperties(),
+        onRefresh: () => controller.fetchPopularStay(),
         child: ListView.separated(
           physics: const AlwaysScrollableScrollPhysics(),
           itemCount: properties.length,

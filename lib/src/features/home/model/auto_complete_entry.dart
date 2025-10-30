@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/models/search_auto_complete_result.dart';
+import 'auto_complete_search_type.dart';
 
 enum AutoCompleteCategory {
   property,
@@ -48,18 +49,21 @@ extension AutoCompleteCategoryX on AutoCompleteCategory {
 }
 
 AutoCompleteCategory categoryFromKey(String key) {
-  switch (key) {
-    case 'byPropertyName':
+  final type = AutoCompleteSearchType.tryFromKey(key);
+  switch (type) {
+    case AutoCompleteSearchType.propertyName:
       return AutoCompleteCategory.property;
-    case 'byCity':
+    case AutoCompleteSearchType.city:
       return AutoCompleteCategory.city;
-    case 'byState':
+    case AutoCompleteSearchType.state:
       return AutoCompleteCategory.state;
-    case 'byCountry':
+    case AutoCompleteSearchType.country:
       return AutoCompleteCategory.country;
-    case 'byStreet':
+    case AutoCompleteSearchType.street:
       return AutoCompleteCategory.street;
-    default:
+    case AutoCompleteSearchType.random:
+      return AutoCompleteCategory.other;
+    case null:
       return AutoCompleteCategory.other;
   }
 }

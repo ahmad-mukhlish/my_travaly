@@ -6,27 +6,16 @@ import '../data/models/property_model.dart';
 import '../data/models/search_auto_complete_result.dart' hide AutoCompleteCategory;
 import '../data/repositories/home_repository.dart';
 import '../model/auto_complete_entry.dart';
+import '../model/auto_complete_search_type.dart';
 import '../model/entity_type.dart';
 import '../model/property_search_type.dart';
 import '../../search_results/models/search_results_arguments.dart';
 import 'package:my_travaly/src/routes/app_routes.dart';
 
 class HomeController extends GetxController {
-  static const List<String> _autoCompleteDisplayOrder = <String>[
-    'byPropertyName',
-    'byCity',
-    'byState',
-    'byCountry',
-    'byStreet',
-  ];
-  static const List<String> _autoCompleteSearchTypes = <String>[
-    'byCity',
-    'byState',
-    'byCountry',
-    'byRandom',
-    'byStreet',
-    'byPropertyName',
-  ];
+  static final List<String> _autoCompleteDisplayOrder = AutoCompleteSearchType.displayOrderKeys;
+  static final List<String> _autoCompleteSearchTypes = AutoCompleteSearchType.searchTypeKeys;
+
   HomeController({HomeRepository? repository})
       : _repository = repository ?? Get.find<HomeRepository>();
 
@@ -56,7 +45,7 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchProperties();
+    fetchPopularStay();
   }
 
   @override
@@ -65,7 +54,7 @@ class HomeController extends GetxController {
     super.onClose();
   }
 
-  Future<void> fetchProperties({
+  Future<void> fetchPopularStay({
     String? query,
     EntityType? entityType,
     PropertySearchType? searchTypeOverride,
@@ -140,13 +129,13 @@ class HomeController extends GetxController {
   ) {
     final trimmedQuery = query.trim();
     if (trimmedQuery.isEmpty) {
-      return ('byRandom', const {});
+      return (AutoCompleteSearchType.random.key, const {});
     }
 
     switch (type) {
       case PropertySearchType.hotelName:
         return (
-          'byRandom',
+          AutoCompleteSearchType.random.key,
           {
             'keyword': trimmedQuery,
             'propertyName': trimmedQuery,
@@ -154,21 +143,21 @@ class HomeController extends GetxController {
         );
       case PropertySearchType.city:
         return (
-          'byCity',
+          AutoCompleteSearchType.city.key,
           {
             'city': trimmedQuery,
           },
         );
       case PropertySearchType.state:
         return (
-          'byState',
+          AutoCompleteSearchType.state.key,
           {
             'state': trimmedQuery,
           },
         );
       case PropertySearchType.country:
         return (
-          'byCountry',
+          AutoCompleteSearchType.country.key,
           {
             'country': trimmedQuery,
           },
@@ -197,7 +186,7 @@ class HomeController extends GetxController {
 
   void onSearchTypeChanged(PropertySearchType type) {
     selectedSearchType.value = type;
-    fetchProperties();
+    fetchPopularStay();
   }
 
   void onEntityTypeSelected(EntityType type) {
@@ -205,7 +194,7 @@ class HomeController extends GetxController {
       return;
     }
     selectedEntityType.value = type;
-    fetchProperties(entityType: type);
+    fetchPopularStay(entityType: type);
   }
 
   Future<List<HomeAutoCompleteEntry>> searchAutoComplete(String query) async {
@@ -343,10 +332,10 @@ class HomeController extends GetxController {
           'state': suggestion.address?.state ?? '',
           'country': suggestion.address?.country ?? '',
         };
-        await fetchProperties(
+        await fetchPopularStay(
           query: suggestion.address?.city ?? suggestion.valueToDisplay,
           searchTypeOverride: PropertySearchType.city,
-          searchTypeKeyOverride: 'byCity',
+          searchTypeKeyOverride: AutoCompleteSearchType.city.key,
           searchInfoOverride: info,
         );
         break;
@@ -355,10 +344,10 @@ class HomeController extends GetxController {
           'state': suggestion.address?.state ?? suggestion.valueToDisplay,
           'country': suggestion.address?.country ?? '',
         };
-        await fetchProperties(
+        await fetchPopularStay(
           query: suggestion.address?.state ?? suggestion.valueToDisplay,
           searchTypeOverride: PropertySearchType.state,
-          searchTypeKeyOverride: 'byState',
+          searchTypeKeyOverride: AutoCompleteSearchType.state.key,
           searchInfoOverride: info,
         );
         break;
@@ -366,19 +355,19 @@ class HomeController extends GetxController {
         final info = <String, dynamic>{
           'country': suggestion.address?.country ?? suggestion.valueToDisplay,
         };
-        await fetchProperties(
+        await fetchPopularStay(
           query: suggestion.address?.country ?? suggestion.valueToDisplay,
           searchTypeOverride: PropertySearchType.country,
-          searchTypeKeyOverride: 'byCountry',
+          searchTypeKeyOverride: AutoCompleteSearchType.country.key,
           searchInfoOverride: info,
         );
         break;
       case AutoCompleteCategory.street:
       case AutoCompleteCategory.other:
-        await fetchProperties(
+        await fetchPopularStay(
           query: suggestion.valueToDisplay,
           searchTypeOverride: PropertySearchType.hotelName,
-          searchTypeKeyOverride: 'byRandom',
+          searchTypeKeyOverride: AutoCompleteSearchType.random.key,
           searchInfoOverride: {
             'keyword': suggestion.valueToDisplay,
           },
