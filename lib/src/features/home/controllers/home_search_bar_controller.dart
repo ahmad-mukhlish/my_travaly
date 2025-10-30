@@ -6,6 +6,7 @@ import '../../login/model/login_model.dart';
 import '../data/models/search_auto_complete_result.dart' hide AutoCompleteCategory;
 import '../data/repositories/home_repository.dart';
 import '../model/auto_complete_entry.dart';
+import '../model/home_auto_complete_entry.dart';
 import '../model/auto_complete_search_type.dart';
 
 class HomeSearchBarController extends GetxController {

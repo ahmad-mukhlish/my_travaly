@@ -8,6 +8,7 @@ import '../model/property_search_type.dart';
 import '../../search_results/models/search_results_arguments.dart';
 import 'package:my_travaly/src/routes/app_routes.dart';
 import '../model/auto_complete_entry.dart';
+import '../model/home_auto_complete_entry.dart';
 import '../model/auto_complete_search_type.dart';
 
 class HomeController extends GetxController {
