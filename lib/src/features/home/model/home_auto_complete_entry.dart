@@ -1,5 +1,5 @@
-import '../data/models/search_auto_complete_result.dart' hide AutoCompleteCategory;
-import 'auto_complete_entry.dart';
+import '../data/models/search_auto_complete_result.dart';
+import 'auto_complete_category.dart';
 
 sealed class HomeAutoCompleteEntry {
   const HomeAutoCompleteEntry({required this.category});

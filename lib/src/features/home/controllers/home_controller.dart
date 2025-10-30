@@ -4,17 +4,17 @@ import '../../login/controllers/login_controller.dart';
 import '../../login/model/login_model.dart';
 import '../data/models/property_model.dart';
 import '../data/repositories/home_repository.dart';
+import '../model/auto_complete_category.dart';
 import '../model/entity_type.dart';
 import '../model/property_search_type.dart';
 import '../../search_results/models/search_results_arguments.dart';
 import 'package:my_travaly/src/routes/app_routes.dart';
-import '../model/auto_complete_entry.dart';
 import '../model/home_auto_complete_entry.dart';
 import '../model/auto_complete_search_type.dart';
 
 class HomeController extends GetxController {
-  HomeController({HomeRepository? repository})
-      : _repository = repository ?? Get.find<HomeRepository>();
+  HomeController({required HomeRepository repository})
+      : _repository = repository;
 
   final HomeRepository _repository;
 

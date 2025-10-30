@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:my_travaly/src/features/home/data/datasources/home_remote_data_source.dart';
 import 'package:my_travaly/src/features/home/data/repositories/home_repository.dart';
+import 'package:my_travaly/src/features/login/controllers/login_controller.dart';
 
 import '../controllers/home_controller.dart';
 import '../controllers/home_search_bar_controller.dart';
@@ -22,7 +23,8 @@ class HomeBinding extends Bindings {
 
     if (!Get.isRegistered<HomeSearchBarController>()) {
       Get.lazyPut<HomeSearchBarController>(
-        () => HomeSearchBarController(repository: Get.find<HomeRepository>()),
+        () => HomeSearchBarController(repository: Get.find<HomeRepository>(),
+            loginController: Get.find<LoginController>()),
       );
     }
 

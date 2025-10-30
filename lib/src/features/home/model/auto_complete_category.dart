@@ -37,7 +37,7 @@ enum AutoCompleteCategory {
 }
 
 AutoCompleteCategory categoryFromKey(String key) {
-  final type = AutoCompleteSearchType.tryFromKey(key);
+  final type = AutoCompleteSearchType.fromKeyOrNull(key);
   switch (type) {
     case AutoCompleteSearchType.propertyName:
       return AutoCompleteCategory.property;

@@ -25,7 +25,7 @@ class PropertyCard extends StatelessWidget {
                 property.propertyImage,
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => Container(
-                  color: theme.colorScheme.surfaceVariant,
+                  color: theme.colorScheme.surfaceContainerHighest,
                   alignment: Alignment.center,
                   child: const Icon(Icons.broken_image_outlined, size: 48),
                 ),

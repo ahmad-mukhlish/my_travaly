@@ -3,18 +3,18 @@ import 'package:get/get.dart';
 
 import '../../login/controllers/login_controller.dart';
 import '../../login/model/login_model.dart';
-import '../data/models/search_auto_complete_result.dart' hide AutoCompleteCategory;
+import '../data/models/search_auto_complete_result.dart' hide AutoCompleteCategoryResult;
 import '../data/repositories/home_repository.dart';
-import '../model/auto_complete_entry.dart';
+import '../model/auto_complete_category.dart';
 import '../model/home_auto_complete_entry.dart';
 import '../model/auto_complete_search_type.dart';
 
 class HomeSearchBarController extends GetxController {
   HomeSearchBarController({
-    HomeRepository? repository,
-    LoginController? loginController,
-  })  : _repository = repository ?? Get.find<HomeRepository>(),
-        _loginController = loginController ?? Get.find<LoginController>();
+    required HomeRepository repository,
+    required LoginController loginController,
+  })  : _repository = repository,
+        _loginController = loginController;
 
   static final List<String> _autoCompleteDisplayOrder = AutoCompleteSearchType.displayOrderKeys;
   static final List<String> _autoCompleteSearchTypes = AutoCompleteSearchType.searchTypeKeys;
@@ -41,7 +41,7 @@ class HomeSearchBarController extends GetxController {
 
   Future<List<HomeAutoCompleteEntry>> searchAutoComplete(String query) async {
     final trimmed = query.trim();
-    if (trimmed.isEmpty) {
+    if (trimmed.length < 3) {
       clearAutoCompleteState();
       return _cachedAutoCompleteEntries;
     }
