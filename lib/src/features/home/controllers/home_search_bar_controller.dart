@@ -84,9 +84,6 @@ class HomeSearchBarController extends GetxController {
     }
   }
 
-  /// Converts the backend auto-complete payload into the flat list that the
-  /// typeahead widget expects, keeping categories sorted by the configured
-  /// display order.
   List<HomeAutoCompleteEntry> _buildAutoCompleteEntries(
     SearchAutoCompleteResult result,
   ) {
@@ -100,15 +97,11 @@ class HomeSearchBarController extends GetxController {
     return entries;
   }
 
-  /// Builds the header item and suggestion rows for a single category if it is
-  /// present and contains at least one suggestion.
   List<HomeAutoCompleteEntry> _entriesForCategory(
     String categoryKey,
     AutoCompleteCategoryResult category,
   ) {
-    if (!category.present || category.suggestions.isEmpty) {
-      return [];
-    }
+    if (!category.present || category.suggestions.isEmpty) return [];
 
     final resolvedCategory = categoryFromKey(categoryKey);
     final entries = <HomeAutoCompleteEntry>[
