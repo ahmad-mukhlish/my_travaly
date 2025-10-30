@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
-import '../../controllers/home_controller.dart';
+import '../../controllers/home_search_bar_controller.dart';
 import '../../model/auto_complete_entry.dart';
 
 class HomeSearchBar extends StatelessWidget {
-  const HomeSearchBar({super.key, required this.controller});
+  const HomeSearchBar({
+    super.key,
+    required this.controller,
+    required this.onQueryChanged,
+    required this.onQuerySubmitted,
+    required this.onRefreshRequested,
+    required this.onSuggestionSelected,
+  });
 
-  final HomeController controller;
+  final HomeSearchBarController controller;
+  final ValueChanged<String> onQueryChanged;
+  final ValueChanged<String> onQuerySubmitted;
+  final Future<void> Function(String) onRefreshRequested;
+  final Future<void> Function(HomeAutoCompleteItem) onSuggestionSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -37,21 +48,21 @@ class HomeSearchBar extends StatelessWidget {
                         IconButton(
                           onPressed: () {
                             textController.clear();
-                            controller.onSearchChanged('');
+                            onQueryChanged('');
                           },
                           icon: const Icon(Icons.close),
                           tooltip: 'Clear search',
                         ),
                         IconButton(
-                          onPressed: () => controller.fetchPopularStay(
-                            query: textController.text,
-                          ),
+                          onPressed: () {
+                            onRefreshRequested(textController.text);
+                          },
                           icon: const Icon(Icons.refresh),
                           tooltip: 'Refresh results',
                         ),
                       ],
-                      onChanged: controller.onSearchChanged,
-                      onSubmitted: controller.onSearchSubmitted,
+                      onChanged: onQueryChanged,
+                      onSubmitted: onQuerySubmitted,
                       textInputAction: TextInputAction.search,
                     );
                   },
@@ -120,7 +131,7 @@ class HomeSearchBar extends StatelessWidget {
                   },
                   onSelected: (entry) {
                     if (entry is HomeAutoCompleteItem) {
-                      controller.handleAutoCompleteSelection(entry);
+                      onSuggestionSelected(entry);
                     }
                   },
                   emptyBuilder: (context) => const Padding(
@@ -133,17 +144,20 @@ class HomeSearchBar extends StatelessWidget {
                       child: CircularProgressIndicator(strokeWidth: 2),
                     ),
                   ),
-                  errorBuilder: (context, error) => Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Text(
-                      controller.autoCompleteError.value.isNotEmpty
-                          ? controller.autoCompleteError.value
-                          : 'Failed to load suggestions.',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.error,
+                  errorBuilder: (context, error) {
+                    final errorMessage = controller.autoCompleteError.value;
+                    return Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Text(
+                        errorMessage.isNotEmpty
+                            ? errorMessage
+                            : 'Failed to load suggestions.',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.error,
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                   decorationBuilder: (context, child) {
                     return Material(
                       elevation: 4,

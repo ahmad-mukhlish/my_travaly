@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/home_controller.dart';
+import '../../controllers/home_search_bar_controller.dart';
 import '../widget/home_search_bar.dart';
 import '../widget/hotel_list_view.dart';
 import '../widget/user_view.dart';
@@ -49,6 +50,7 @@ class HomeScreen extends GetView<HomeController> {
 
   Widget _buildHotelsTab(BuildContext context) {
     final theme = Theme.of(context);
+    final searchBarController = Get.find<HomeSearchBarController>();
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -58,7 +60,15 @@ class HomeScreen extends GetView<HomeController> {
             const SizedBox(height: 16),
             _buildEntityTypeChips(theme),
             const SizedBox(height: 16),
-            HomeSearchBar(controller: controller),
+            HomeSearchBar(
+              controller: searchBarController,
+              onQueryChanged: controller.onSearchChanged,
+              onQuerySubmitted: controller.onSearchSubmitted,
+              onRefreshRequested: (query) => controller.fetchPopularStay(
+                query: query,
+              ),
+              onSuggestionSelected: controller.handleAutoCompleteSelection,
+            ),
             const SizedBox(height: 16),
             Expanded(
               child: HotelListView(controller: controller, theme: theme),

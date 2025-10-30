@@ -3,6 +3,7 @@ import 'package:my_travaly/src/features/home/data/datasources/home_remote_data_s
 import 'package:my_travaly/src/features/home/data/repositories/home_repository.dart';
 
 import '../controllers/home_controller.dart';
+import '../controllers/home_search_bar_controller.dart';
 
 class HomeBinding extends Bindings {
   @override
@@ -16,6 +17,12 @@ class HomeBinding extends Bindings {
     if (!Get.isRegistered<HomeRepository>()) {
       Get.lazyPut<HomeRepository>(
         () => HomeRepository(remoteDataSource: Get.find<HomeRemoteDataSource>()),
+      );
+    }
+
+    if (!Get.isRegistered<HomeSearchBarController>()) {
+      Get.lazyPut<HomeSearchBarController>(
+        () => HomeSearchBarController(repository: Get.find<HomeRepository>()),
       );
     }
 
