@@ -8,6 +8,8 @@ import 'package:my_travaly/src/services/network/api_service.dart';
 import 'src/features/login/bindings/login_binding.dart';
 import 'src/routes/app_pages.dart';
 
+const kMyTravalyBrandSeed = Color(0xFF2BB9C3);
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -37,7 +39,7 @@ class MyApp extends StatelessWidget {
       title: 'My Travaly',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+        colorScheme: ColorScheme.fromSeed(seedColor: kMyTravalyBrandSeed),
         useMaterial3: true,
       ),
       initialBinding: LoginBinding(),
