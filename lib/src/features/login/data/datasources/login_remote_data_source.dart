@@ -1,11 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:my_travaly/src/config/environment_config.dart';
 import 'package:my_travaly/src/features/login/data/models/register_device_response.dart';
-import 'package:my_travaly/src/features/login/model/device_register.dart';
+import 'package:my_travaly/src/features/login/data/models/device_register.dart';
 import 'package:my_travaly/src/services/network/api_service.dart';
 
 class LoginRemoteDataSource {
-  LoginRemoteDataSource({required ApiService apiService}) : _apiService = apiService;
+  LoginRemoteDataSource({required ApiService apiService})
+    : _apiService = apiService;
 
   final ApiService _apiService;
 
@@ -19,7 +20,8 @@ class LoginRemoteDataSource {
 
     final options = Options(
       headers: {
-        if (EnvironmentConfig.authToken.isNotEmpty)'authtoken': EnvironmentConfig.authToken,
+        if (EnvironmentConfig.authToken.isNotEmpty)
+          'authtoken': EnvironmentConfig.authToken,
       },
     );
 

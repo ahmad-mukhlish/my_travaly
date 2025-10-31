@@ -5,10 +5,7 @@ enum EntityType {
   homestay(label: 'Homestays', backendValue: 'Home Stay'),
   campsite(label: 'Campsites', backendValue: 'Camp_sites/tent');
 
-  const EntityType({
-    required this.label,
-    required this.backendValue,
-  });
+  const EntityType({required this.label, required this.backendValue});
 
   final String label;
   final String backendValue;

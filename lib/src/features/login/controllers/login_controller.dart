@@ -5,13 +5,14 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_travaly/src/config/environment_config.dart';
 import 'package:my_travaly/src/features/login/data/repositories/login_repository.dart';
-import 'package:my_travaly/src/features/login/model/device_register.dart';
-import 'package:my_travaly/src/features/login/model/login_model.dart';
+import 'package:my_travaly/src/features/login/data/models/device_register.dart';
+import 'package:my_travaly/src/features/login/presentation/models/login_model.dart';
 import 'package:my_travaly/src/routes/app_routes.dart';
 import 'package:my_travaly/src/services/auth/auth_storage_service.dart';
 
 class LoginController extends GetxController {
-  LoginController({required LoginRepository loginRepository}) : _loginRepository = loginRepository;
+  LoginController({required LoginRepository loginRepository})
+    : _loginRepository = loginRepository;
 
   final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -32,7 +33,7 @@ class LoginController extends GetxController {
   Future<void> initSignIn() async {
     if (!isInitialize) {
       await _googleSignIn.initialize(
-        serverClientId: EnvironmentConfig.googleServerClientId
+        serverClientId: EnvironmentConfig.googleServerClientId,
       );
     }
     isInitialize = true;
@@ -52,7 +53,9 @@ class LoginController extends GetxController {
       }
 
       final DeviceRegister deviceRegister = await getDeviceRegister;
-      final registerResponse = await _loginRepository.registerDevice(deviceRegister);
+      final registerResponse = await _loginRepository.registerDevice(
+        deviceRegister,
+      );
       user.value = LoginUser.create(
         account,
         deviceRegister,
@@ -106,7 +109,7 @@ class LoginController extends GetxController {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
       return DeviceRegister(
         deviceModel: iosInfo.model,
-        deviceFingerprint: '${iosInfo.systemName } ${iosInfo.systemVersion}'
+        deviceFingerprint: '${iosInfo.systemName} ${iosInfo.systemVersion}'
             .trim(),
         deviceBrand: 'Apple',
         deviceId: iosInfo.identifierForVendor ?? '',
@@ -130,7 +133,9 @@ class LoginController extends GetxController {
   }
 
   Future<void> _restoreSession() async {
-    final storedUser = AuthStorageService.to.currentUser ?? await AuthStorageService.to.loadUser();
+    final storedUser =
+        AuthStorageService.to.currentUser ??
+        await AuthStorageService.to.loadUser();
     user.value = storedUser;
   }
 

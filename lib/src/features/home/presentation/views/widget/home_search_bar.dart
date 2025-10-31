@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:my_travaly/src/features/home/controllers/home_search_bar_controller.dart';
-import 'package:my_travaly/src/features/home/model/home_auto_complete_entry.dart';
+import 'package:my_travaly/src/features/home/presentation/models/home_auto_complete_entry.dart';
 
 class HomeSearchBar extends StatelessWidget {
   const HomeSearchBar({
@@ -26,27 +26,27 @@ class HomeSearchBar extends StatelessWidget {
       children: [
         const SizedBox(height: 12),
         Row(
-            children: [
-              Expanded(
-                child: TypeAheadField<HomeAutoCompleteEntry>(
-                  controller: controller.searchController,
-                  debounceDuration: const Duration(milliseconds: 400),
-                  suggestionsCallback: controller.searchAutoComplete,
-                  constraints: const BoxConstraints(maxHeight: 360),
-                  hideOnEmpty: true,
-                  hideOnError: false,
-                  hideOnLoading: false,
-                  builder: _buildSearchInput,
-                  itemBuilder: _buildSuggestionEntry,
-                  onSelected: _handleEntrySelected,
-                  emptyBuilder: _buildEmptyState,
-                  loadingBuilder: _buildLoadingState,
-                  errorBuilder: _buildErrorState,
-                  decorationBuilder: _decorateSuggestions,
-                ),
+          children: [
+            Expanded(
+              child: TypeAheadField<HomeAutoCompleteEntry>(
+                controller: controller.searchController,
+                debounceDuration: const Duration(milliseconds: 400),
+                suggestionsCallback: controller.searchAutoComplete,
+                constraints: const BoxConstraints(maxHeight: 360),
+                hideOnEmpty: true,
+                hideOnError: false,
+                hideOnLoading: false,
+                builder: _buildSearchInput,
+                itemBuilder: _buildSuggestionEntry,
+                onSelected: _handleEntrySelected,
+                emptyBuilder: _buildEmptyState,
+                loadingBuilder: _buildLoadingState,
+                errorBuilder: _buildErrorState,
+                decorationBuilder: _decorateSuggestions,
               ),
-            ],
-          ),
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -102,10 +102,7 @@ class HomeSearchBar extends StatelessWidget {
     return IgnorePointer(
       ignoring: true,
       child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: 8,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         child: Text(
           '${entry.title} (${entry.count})',
           style: theme.textTheme.titleSmall?.copyWith(
@@ -116,7 +113,10 @@ class HomeSearchBar extends StatelessWidget {
     );
   }
 
-  Widget _buildSuggestionTile(BuildContext context, HomeAutoCompleteItem entry) {
+  Widget _buildSuggestionTile(
+    BuildContext context,
+    HomeAutoCompleteItem entry,
+  ) {
     final theme = Theme.of(context);
     final address = entry.address;
     final subtitleParts = <String>[];
@@ -129,30 +129,20 @@ class HomeSearchBar extends StatelessWidget {
     if (state != null && state.isNotEmpty) {
       subtitleParts.add(state);
     }
-    if (country != null && country.isNotEmpty && !subtitleParts.contains(country)) {
+    if (country != null &&
+        country.isNotEmpty &&
+        !subtitleParts.contains(country)) {
       subtitleParts.add(country);
     }
 
     return ListTile(
-      leading: Icon(
-        entry.category.icon,
-        color: theme.colorScheme.primary,
-      ),
-      title: Text(
-        entry.title,
-        style: theme.textTheme.bodyLarge,
-      ),
+      leading: Icon(entry.category.icon, color: theme.colorScheme.primary),
+      title: Text(entry.title, style: theme.textTheme.bodyLarge),
       subtitle: subtitleParts.isEmpty
           ? null
-          : Text(
-              subtitleParts.join(', '),
-              style: theme.textTheme.bodySmall,
-            ),
+          : Text(subtitleParts.join(', '), style: theme.textTheme.bodySmall),
       dense: true,
-      contentPadding: const EdgeInsets.symmetric(
-        horizontal: 12,
-        vertical: 4,
-      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       trailing: const Icon(Icons.chevron_right),
     );
   }
@@ -173,9 +163,7 @@ class HomeSearchBar extends StatelessWidget {
   Widget _buildLoadingState(BuildContext context) {
     return const Padding(
       padding: EdgeInsets.all(16),
-      child: Center(
-        child: CircularProgressIndicator(strokeWidth: 2),
-      ),
+      child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
     );
   }
 

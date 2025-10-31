@@ -2,22 +2,21 @@ import 'package:get/get.dart';
 import 'package:my_travaly/src/features/home/data/models/property_model.dart';
 import 'package:my_travaly/src/features/home/data/repositories/home_repository.dart';
 import 'package:my_travaly/src/features/home/controllers/home_search_bar_controller.dart';
-import 'package:my_travaly/src/features/home/model/auto_complete_category.dart';
-import 'package:my_travaly/src/features/home/model/entity_type.dart';
-import 'package:my_travaly/src/features/home/model/home_auto_complete_entry.dart';
-import 'package:my_travaly/src/features/home/model/property_search_type.dart';
+import 'package:my_travaly/src/enums/enums.dart';
+import 'package:my_travaly/src/features/home/presentation/models/home_auto_complete_entry.dart';
 import 'package:my_travaly/src/features/login/controllers/login_controller.dart';
-import 'package:my_travaly/src/features/login/model/login_model.dart';
-import 'package:my_travaly/src/features/search_results/models/search_results_arguments.dart';
-import 'package:my_travaly/src/features/search_results/models/search_results_filter.dart';
+import 'package:my_travaly/src/features/login/presentation/models/login_model.dart';
+import 'package:my_travaly/src/features/search_results/presentation/models/search_results_arguments.dart';
+import 'package:my_travaly/src/features/search_results/presentation/models/search_results_filter.dart';
 import 'package:my_travaly/src/routes/app_routes.dart';
 
-
 class HomeController extends GetxController {
-  HomeController({required HomeRepository repository}) : _repository = repository;
+  HomeController({required HomeRepository repository})
+    : _repository = repository;
 
   final HomeRepository _repository;
-  final HomeSearchBarController _searchBarController = Get.find<HomeSearchBarController>();
+  final HomeSearchBarController _searchBarController =
+      Get.find<HomeSearchBarController>();
 
   final RxBool isSigningOut = false.obs;
   final RxBool isLoading = false.obs;
@@ -47,13 +46,15 @@ class HomeController extends GetxController {
   }) async {
     final visitorToken = user?.visitorToken ?? '';
     if (visitorToken.isEmpty) {
-      errorMessage.value = 'Visitor token missing. Please sign out and sign in again.';
+      errorMessage.value =
+          'Visitor token missing. Please sign out and sign in again.';
       properties.clear();
       return;
     }
 
     final EntityType nextEntityType = entityType ?? selectedEntityType.value;
-    if (selectedEntityType.value != nextEntityType) selectedEntityType.value = nextEntityType;
+    if (selectedEntityType.value != nextEntityType)
+      selectedEntityType.value = nextEntityType;
 
     isLoading.value = true;
     errorMessage.value = '';
@@ -92,7 +93,6 @@ class HomeController extends GetxController {
       if (items.isEmpty) throw "items is empty";
 
       await _navigateWithAutoCompleteItem(items.first);
-
     } catch (error) {
       Get.snackbar(
         'Search unavailable',

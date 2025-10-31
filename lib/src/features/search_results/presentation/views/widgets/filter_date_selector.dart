@@ -20,9 +20,7 @@ class FilterDateSelector extends StatelessWidget {
       style: OutlinedButton.styleFrom(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         alignment: Alignment.centerLeft,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,8 +35,18 @@ class FilterDateSelector extends StatelessWidget {
 
   String _formatDisplayDate(DateTime date) {
     const monthNames = <String>[
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     final month = monthNames[date.month - 1];
     return '$month ${date.day}, ${date.year}';

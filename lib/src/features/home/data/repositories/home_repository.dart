@@ -1,12 +1,11 @@
 import 'package:my_travaly/src/features/home/data/datasources/home_remote_data_source.dart';
 import 'package:my_travaly/src/features/home/data/models/property_model.dart';
 import 'package:my_travaly/src/features/home/data/models/search_auto_complete_result.dart';
-import 'package:my_travaly/src/features/home/model/auto_complete_search_type.dart';
+import 'package:my_travaly/src/enums/enums.dart';
 
 class HomeRepository {
-  const HomeRepository({
-    required HomeRemoteDataSource remoteDataSource,
-  }) : _remoteDataSource = remoteDataSource;
+  const HomeRepository({required HomeRemoteDataSource remoteDataSource})
+    : _remoteDataSource = remoteDataSource;
 
   final HomeRemoteDataSource _remoteDataSource;
 

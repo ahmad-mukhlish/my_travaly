@@ -1,26 +1,12 @@
 enum AutoCompleteSearchType {
-  propertyName(
-    key: 'byPropertyName',
-  ),
-  city(
-    key: 'byCity',
-  ),
-  state(
-    key: 'byState',
-  ),
-  country(
-    key: 'byCountry',
-  ),
-  street(
-    key: 'byStreet',
-  ),
-  random(
-    key: 'byRandom',
-  );
+  propertyName(key: 'byPropertyName'),
+  city(key: 'byCity'),
+  state(key: 'byState'),
+  country(key: 'byCountry'),
+  street(key: 'byStreet'),
+  random(key: 'byRandom');
 
-  const AutoCompleteSearchType({
-    required this.key,
-  });
+  const AutoCompleteSearchType({required this.key});
 
   final String key;
 
@@ -34,9 +20,7 @@ enum AutoCompleteSearchType {
   ];
 
   static List<String> get searchTypeKeys {
-    return List<String>.unmodifiable(
-      _searchSequence.map((type) => type.key),
-    );
+    return List<String>.unmodifiable(_searchSequence.map((type) => type.key));
   }
 
   static AutoCompleteSearchType? fromKeyOrNull(String key) {

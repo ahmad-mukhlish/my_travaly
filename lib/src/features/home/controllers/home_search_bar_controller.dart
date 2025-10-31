@@ -2,29 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_travaly/src/features/home/data/models/search_auto_complete_result.dart';
 import 'package:my_travaly/src/features/home/data/repositories/home_repository.dart';
-import 'package:my_travaly/src/features/home/model/auto_complete_category.dart';
-import 'package:my_travaly/src/features/home/model/auto_complete_search_type.dart';
-import 'package:my_travaly/src/features/home/model/home_auto_complete_entry.dart';
+import 'package:my_travaly/src/enums/enums.dart';
+import 'package:my_travaly/src/features/home/presentation/models/home_auto_complete_entry.dart';
 import 'package:my_travaly/src/features/login/controllers/login_controller.dart';
-import 'package:my_travaly/src/features/login/model/login_model.dart';
+import 'package:my_travaly/src/features/login/presentation/models/login_model.dart';
 
 class HomeSearchBarController extends GetxController {
   HomeSearchBarController({
     required HomeRepository repository,
     required LoginController loginController,
-  })  : _repository = repository, _loginController = loginController;
-
+  }) : _repository = repository,
+       _loginController = loginController;
 
   final HomeRepository _repository;
   final LoginController _loginController;
 
   final SearchController searchController = SearchController();
   final RxBool isAutoCompleteLoading = false.obs;
-  final Rxn<SearchAutoCompleteResult> autoCompleteResult = Rxn<SearchAutoCompleteResult>();
+  final Rxn<SearchAutoCompleteResult> autoCompleteResult =
+      Rxn<SearchAutoCompleteResult>();
   final RxString autoCompleteError = ''.obs;
 
   String _lastAutoCompleteQuery = '';
-  List<HomeAutoCompleteEntry> _cachedAutoCompleteEntries = const <HomeAutoCompleteEntry>[];
+  List<HomeAutoCompleteEntry> _cachedAutoCompleteEntries =
+      const <HomeAutoCompleteEntry>[];
 
   LoginUser? get user => _loginController.user.value;
 

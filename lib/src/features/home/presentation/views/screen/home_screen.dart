@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_travaly/src/features/home/controllers/home_controller.dart';
 import 'package:my_travaly/src/features/home/controllers/home_search_bar_controller.dart';
-import 'package:my_travaly/src/features/home/model/entity_type.dart';
-import 'package:my_travaly/src/features/home/views/widget/home_search_bar.dart';
-import 'package:my_travaly/src/features/home/views/widget/hotel_list_view.dart';
-import 'package:my_travaly/src/features/home/views/widget/user_view.dart';
+import 'package:my_travaly/src/enums/entity_type.dart';
+import 'package:my_travaly/src/features/home/presentation/views/widget/home_search_bar.dart';
+import 'package:my_travaly/src/features/home/presentation/views/widget/hotel_list_view.dart';
+import 'package:my_travaly/src/features/home/presentation/views/widget/user_view.dart';
 
 class HomeScreen extends GetView<HomeController> {
   const HomeScreen({super.key});
@@ -24,14 +24,8 @@ class HomeScreen extends GetView<HomeController> {
         currentIndex: controller.selectedTabIndex.value,
         onTap: controller.changeTab,
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.hotel),
-            label: 'Hotels',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Account',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.hotel), label: 'Hotels'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
         ],
       ),
     );
@@ -63,9 +57,8 @@ class HomeScreen extends GetView<HomeController> {
               controller: searchBarController,
               onQueryChanged: controller.onSearchChanged,
               onQuerySubmitted: controller.onSearchSubmitted,
-              onRefreshRequested: (query) => controller.fetchPopularStay(
-                query: query,
-              ),
+              onRefreshRequested: (query) =>
+                  controller.fetchPopularStay(query: query),
               onSuggestionSelected: controller.handleAutoCompleteSelection,
             ),
             const SizedBox(height: 16),

@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:my_travaly/src/features/search_results/controllers/search_results_controller.dart';
 import 'package:my_travaly/src/features/search_results/data/models/search_result_model.dart';
-import 'package:my_travaly/src/features/search_results/views/widgets/search_result_card.dart';
-import 'package:my_travaly/src/features/search_results/views/widgets/search_results_error_indicator.dart';
+import 'package:my_travaly/src/features/search_results/presentation/views/widgets/search_result_card.dart';
+import 'package:my_travaly/src/features/search_results/presentation/views/widgets/search_results_error_indicator.dart';
 
 class SearchResultsScreen extends GetView<SearchResultsController> {
   const SearchResultsScreen({super.key});
@@ -12,9 +12,7 @@ class SearchResultsScreen extends GetView<SearchResultsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Search Result Page'),
-      ),
+      appBar: AppBar(title: Text('Search Result Page')),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -53,23 +51,33 @@ class SearchResultsScreen extends GetView<SearchResultsController> {
                 return RefreshIndicator(
                   onRefresh: controller.refreshResults,
                   child: PagedListView<int, SearchResult>(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
                     state: state,
                     fetchNextPage: fetchNextPage,
                     builderDelegate: PagedChildBuilderDelegate<SearchResult>(
-                      itemBuilder: (context, result, index) => SearchResultCard(result: result),
+                      itemBuilder: (context, result, index) =>
+                          SearchResultCard(result: result),
                       firstPageProgressIndicatorBuilder: (_) =>
                           const Center(child: CircularProgressIndicator()),
                       newPageProgressIndicatorBuilder: (_) =>
                           const Center(child: CircularProgressIndicator()),
-                      firstPageErrorIndicatorBuilder: (_) => SearchResultsErrorIndicator(
-                        message: state.error?.toString() ?? 'Failed to load results.',
-                        onRetry: fetchNextPage,
-                      ),
-                      newPageErrorIndicatorBuilder: (_) => SearchResultsErrorIndicator(
-                        message: state.error?.toString() ?? 'Failed to load more results.',
-                        onRetry: fetchNextPage,
-                      ),
+                      firstPageErrorIndicatorBuilder: (_) =>
+                          SearchResultsErrorIndicator(
+                            message:
+                                state.error?.toString() ??
+                                'Failed to load results.',
+                            onRetry: fetchNextPage,
+                          ),
+                      newPageErrorIndicatorBuilder: (_) =>
+                          SearchResultsErrorIndicator(
+                            message:
+                                state.error?.toString() ??
+                                'Failed to load more results.',
+                            onRetry: fetchNextPage,
+                          ),
                       noItemsFoundIndicatorBuilder: (_) => Center(
                         child: Text(
                           'No properties found for "${controller.title}". \nTry refining your search.',
@@ -87,5 +95,4 @@ class SearchResultsScreen extends GetView<SearchResultsController> {
       ),
     );
   }
-
 }

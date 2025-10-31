@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:my_travaly/src/features/search_results/controllers/search_results_controller.dart';
-import 'package:my_travaly/src/features/search_results/models/search_results_filter.dart';
-import 'package:my_travaly/src/features/search_results/views/widgets/filter_counter_selector.dart';
-import 'package:my_travaly/src/features/search_results/views/widgets/filter_date_selector.dart';
-import 'package:my_travaly/src/features/search_results/views/widgets/filter_price_range_selector.dart';
+import 'package:my_travaly/src/features/search_results/presentation/models/search_results_filter.dart';
+import 'package:my_travaly/src/features/search_results/presentation/views/widgets/filter_counter_selector.dart';
+import 'package:my_travaly/src/features/search_results/presentation/views/widgets/filter_date_selector.dart';
+import 'package:my_travaly/src/features/search_results/presentation/views/widgets/filter_price_range_selector.dart';
 
 class SearchFiltersDialogContent extends StatefulWidget {
   const SearchFiltersDialogContent({super.key, required this.controller});
@@ -11,10 +11,12 @@ class SearchFiltersDialogContent extends StatefulWidget {
   final SearchResultsController controller;
 
   @override
-  State<SearchFiltersDialogContent> createState() => _SearchFiltersDialogContentState();
+  State<SearchFiltersDialogContent> createState() =>
+      _SearchFiltersDialogContentState();
 }
 
-class _SearchFiltersDialogContentState extends State<SearchFiltersDialogContent> {
+class _SearchFiltersDialogContentState
+    extends State<SearchFiltersDialogContent> {
   late SearchResultsFilter _workingFilter;
 
   @override
@@ -24,11 +26,14 @@ class _SearchFiltersDialogContentState extends State<SearchFiltersDialogContent>
     final adjustedAdultsFilter = current.adults < current.rooms
         ? current.copyWith(adults: current.rooms)
         : current;
-    final normalizedLowPrice = adjustedAdultsFilter.lowPrice.clamp(0, kSearchResultsMaxPrice).toInt();
+    final normalizedLowPrice = adjustedAdultsFilter.lowPrice
+        .clamp(0, kSearchResultsMaxPrice)
+        .toInt();
     final normalizedHighPrice = adjustedAdultsFilter.highPrice
         .clamp(normalizedLowPrice, kSearchResultsMaxPrice)
         .toInt();
-    _workingFilter = (normalizedLowPrice != adjustedAdultsFilter.lowPrice ||
+    _workingFilter =
+        (normalizedLowPrice != adjustedAdultsFilter.lowPrice ||
             normalizedHighPrice != adjustedAdultsFilter.highPrice)
         ? adjustedAdultsFilter.copyWith(
             lowPrice: normalizedLowPrice,
@@ -69,7 +74,9 @@ class _SearchFiltersDialogContentState extends State<SearchFiltersDialogContent>
                   final selected = await _pickDate(
                     context,
                     initial: _workingFilter.checkOut,
-                    firstDate: _workingFilter.checkIn.add(const Duration(days: 1)),
+                    firstDate: _workingFilter.checkIn.add(
+                      const Duration(days: 1),
+                    ),
                   );
                   if (selected != null) {
                     _updateCheckOut(selected);
@@ -87,7 +94,9 @@ class _SearchFiltersDialogContentState extends State<SearchFiltersDialogContent>
                 value: _workingFilter.rooms,
                 minValue: 1,
                 onChanged: (value) => setState(() {
-                  final updatedAdults = value > _workingFilter.adults ? value : _workingFilter.adults;
+                  final updatedAdults = value > _workingFilter.adults
+                      ? value
+                      : _workingFilter.adults;
                   _workingFilter = _workingFilter.copyWith(
                     rooms: value,
                     adults: updatedAdults,
@@ -118,8 +127,12 @@ class _SearchFiltersDialogContentState extends State<SearchFiltersDialogContent>
           FilterPriceRangeSelector(
             filter: _workingFilter,
             onChanged: (low, high) => setState(() {
-              final normalizedLow = low.clamp(0, kSearchResultsMaxPrice).toInt();
-              final normalizedHigh = high.clamp(normalizedLow, kSearchResultsMaxPrice).toInt();
+              final normalizedLow = low
+                  .clamp(0, kSearchResultsMaxPrice)
+                  .toInt();
+              final normalizedHigh = high
+                  .clamp(normalizedLow, kSearchResultsMaxPrice)
+                  .toInt();
               _workingFilter = _workingFilter.copyWith(
                 lowPrice: normalizedLow,
                 highPrice: normalizedHigh,
@@ -182,5 +195,6 @@ class _SearchFiltersDialogContentState extends State<SearchFiltersDialogContent>
     );
   }
 
-  DateTime _truncate(DateTime date) => DateTime(date.year, date.month, date.day);
+  DateTime _truncate(DateTime date) =>
+      DateTime(date.year, date.month, date.day);
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_travaly/src/features/search_results/models/search_results_filter.dart';
+import 'package:my_travaly/src/features/search_results/presentation/models/search_results_filter.dart';
 
 class FilterPriceRangeSelector extends StatefulWidget {
   const FilterPriceRangeSelector({
@@ -12,7 +12,8 @@ class FilterPriceRangeSelector extends StatefulWidget {
   final void Function(int low, int high) onChanged;
 
   @override
-  State<FilterPriceRangeSelector> createState() => _FilterPriceRangeSelectorState();
+  State<FilterPriceRangeSelector> createState() =>
+      _FilterPriceRangeSelectorState();
 }
 
 class _FilterPriceRangeSelectorState extends State<FilterPriceRangeSelector> {
@@ -66,8 +67,14 @@ class _FilterPriceRangeSelectorState extends State<FilterPriceRangeSelector> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(_formatPrice(_currentValues.start), style: theme.textTheme.bodySmall),
-            Text(_formatPrice(_currentValues.end), style: theme.textTheme.bodySmall),
+            Text(
+              _formatPrice(_currentValues.start),
+              style: theme.textTheme.bodySmall,
+            ),
+            Text(
+              _formatPrice(_currentValues.end),
+              style: theme.textTheme.bodySmall,
+            ),
           ],
         ),
       ],

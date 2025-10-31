@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:my_travaly/src/features/login/data/datasources/login_remote_data_source.dart';
 import 'package:my_travaly/src/features/login/data/models/register_device_response.dart';
-import 'package:my_travaly/src/features/login/model/device_register.dart';
+import 'package:my_travaly/src/features/login/data/models/device_register.dart';
 import 'package:my_travaly/src/services/network/api_service.dart';
 
 class MockApiService extends Mock implements ApiService {}
@@ -38,9 +38,7 @@ void main() {
         'status': true,
         'message': 'Registered',
         'responseCode': 200,
-        'data': {
-          'visitorToken': 'visitor-token',
-        },
+        'data': {'visitorToken': 'visitor-token'},
       };
 
       when(
@@ -123,9 +121,7 @@ void main() {
             'status': true,
             'message': 'Registered',
             'responseCode': 200,
-            'data': {
-              'visitorToken': '',
-            },
+            'data': {'visitorToken': ''},
           },
           requestOptions: RequestOptions(path: ''),
         ),

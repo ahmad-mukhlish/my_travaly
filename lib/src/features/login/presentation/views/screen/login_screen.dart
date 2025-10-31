@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_travaly/src/features/login/controllers/login_controller.dart';
-import 'package:my_travaly/src/features/login/views/widget/google_sign_in_button.dart';
+import 'package:my_travaly/src/features/login/presentation/views/widget/google_sign_in_button.dart';
 
 class LoginScreen extends GetView<LoginController> {
   const LoginScreen({super.key});

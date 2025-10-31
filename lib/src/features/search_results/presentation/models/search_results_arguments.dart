@@ -1,5 +1,5 @@
-import 'package:my_travaly/src/features/home/model/property_search_type.dart';
-import 'package:my_travaly/src/features/search_results/models/search_results_filter.dart';
+import 'package:my_travaly/src/enums/property_search_type.dart';
+import 'package:my_travaly/src/features/search_results/presentation/models/search_results_filter.dart';
 
 class SearchResultsArguments {
   const SearchResultsArguments({

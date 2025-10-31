@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:my_travaly/src/features/home/model/property_search_type.dart';
+import 'package:my_travaly/src/enums/property_search_type.dart';
 import 'package:my_travaly/src/features/login/controllers/login_controller.dart';
 import 'package:my_travaly/src/features/search_results/data/models/search_result_model.dart';
 import 'package:my_travaly/src/features/search_results/data/repositories/search_results_repository.dart';
-import 'package:my_travaly/src/features/search_results/models/search_results_arguments.dart';
-import 'package:my_travaly/src/features/search_results/models/search_results_filter.dart';
-import 'package:my_travaly/src/features/search_results/views/widgets/search_filters_dialog_content.dart';
+import 'package:my_travaly/src/features/search_results/presentation/models/search_results_arguments.dart';
+import 'package:my_travaly/src/features/search_results/presentation/models/search_results_filter.dart';
+import 'package:my_travaly/src/features/search_results/presentation/views/widgets/search_filters_dialog_content.dart';
 
 class SearchResultsController extends GetxController {
   SearchResultsController({
     SearchResultsRepository? repository,
     required SearchResultsArguments arguments,
-  })  : _repository = repository ?? Get.find<SearchResultsRepository>(),
-        _arguments = arguments,
-        filter = (arguments.initialFilter ?? SearchResultsFilter.defaults()).obs {
+  }) : _repository = repository ?? Get.find<SearchResultsRepository>(),
+       _arguments = arguments,
+       filter =
+           (arguments.initialFilter ?? SearchResultsFilter.defaults()).obs {
     pagingController = PagingController<int, SearchResult>(
       getNextPageKey: _getNextPageKey,
       fetchPage: _fetchPage,
@@ -33,7 +34,8 @@ class SearchResultsController extends GetxController {
   final Set<String> _excludedHotelCodes = <String>{};
 
   PropertySearchType get searchType => _arguments.searchType;
-  String get _apiSearchType => _arguments.customSearchType ?? _arguments.searchType.apiValue;
+  String get _apiSearchType =>
+      _arguments.customSearchType ?? _arguments.searchType.apiValue;
   List<String> get queries => _arguments.queries;
   String get title {
     if (_arguments.title != null && _arguments.title!.isNotEmpty) {
@@ -126,11 +128,15 @@ class SearchResultsController extends GetxController {
   Future<List<SearchResult>> _fetchPage(int pageKey) async {
     final visitorToken = _loginController.user.value?.visitorToken ?? '';
     if (visitorToken.isEmpty) {
-      throw Exception('Visitor token missing. Please sign out and sign in again.');
+      throw Exception(
+        'Visitor token missing. Please sign out and sign in again.',
+      );
     }
 
     if (pageKey > 0) {
-      pagingController.value = pagingController.value.copyWith(hasNextPage: false);
+      pagingController.value = pagingController.value.copyWith(
+        hasNextPage: false,
+      );
       return const <SearchResult>[];
     }
 
@@ -189,7 +195,8 @@ class SearchResultsController extends GetxController {
         .toList(growable: false);
   }
 
-  DateTime _truncate(DateTime date) => DateTime(date.year, date.month, date.day);
+  DateTime _truncate(DateTime date) =>
+      DateTime(date.year, date.month, date.day);
 
   void _setRooms(int rooms) {
     final clamped = rooms.clamp(1, 10);

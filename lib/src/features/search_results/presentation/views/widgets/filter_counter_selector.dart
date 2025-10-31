@@ -36,10 +36,7 @@ class FilterCounterSelector extends StatelessWidget {
                 onPressed: canDecrement ? () => onChanged(value - 1) : null,
                 icon: const Icon(Icons.remove),
               ),
-              Text(
-                displayValue.toString(),
-                style: theme.textTheme.titleMedium,
-              ),
+              Text(displayValue.toString(), style: theme.textTheme.titleMedium),
               IconButton(
                 onPressed: () => onChanged(value + 1),
                 icon: const Icon(Icons.add),

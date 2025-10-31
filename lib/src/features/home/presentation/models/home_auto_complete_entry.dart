@@ -1,5 +1,5 @@
-import '../data/models/search_auto_complete_result.dart';
-import 'auto_complete_category.dart';
+import 'package:my_travaly/src/enums/auto_complete_category.dart';
+import 'package:my_travaly/src/features/home/data/models/search_auto_complete_result.dart';
 
 sealed class HomeAutoCompleteEntry {
   const HomeAutoCompleteEntry({required this.category});

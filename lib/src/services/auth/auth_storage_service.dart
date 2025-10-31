@@ -3,12 +3,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:my_travaly/src/routes/app_routes.dart';
-
-import 'package:my_travaly/src/features/login/model/login_model.dart';
+import 'package:my_travaly/src/features/login/presentation/models/login_model.dart';
 
 class AuthStorageService extends GetxService {
   AuthStorageService({FlutterSecureStorage? storage})
-      : _secureStorage = storage ?? const FlutterSecureStorage();
+    : _secureStorage = storage ?? const FlutterSecureStorage();
 
   static AuthStorageService get to => Get.find();
 
@@ -38,8 +37,9 @@ class AuthStorageService extends GetxService {
         return null;
       }
 
-      final Map<String, dynamic> userJson =
-          Map<String, dynamic>.from(jsonDecode(stored) as Map);
+      final Map<String, dynamic> userJson = Map<String, dynamic>.from(
+        jsonDecode(stored) as Map,
+      );
       final loginUser = LoginUser.fromJson(userJson);
       _storedUser.value = loginUser;
       return loginUser;

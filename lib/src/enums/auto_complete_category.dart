@@ -2,35 +2,14 @@ import 'package:flutter/material.dart';
 import 'auto_complete_search_type.dart';
 
 enum AutoCompleteCategory {
-  property(
-    displayName: 'Properties',
-    icon: Icons.hotel,
-  ),
-  city(
-    displayName: 'Cities',
-    icon: Icons.location_city,
-  ),
-  state(
-    displayName: 'States',
-    icon: Icons.map,
-  ),
-  country(
-    displayName: 'Countries',
-    icon: Icons.flag,
-  ),
-  street(
-    displayName: 'Streets',
-    icon: Icons.signpost,
-  ),
-  other(
-    displayName: 'Suggestions',
-    icon: Icons.search,
-  );
+  property(displayName: 'Properties', icon: Icons.hotel),
+  city(displayName: 'Cities', icon: Icons.location_city),
+  state(displayName: 'States', icon: Icons.map),
+  country(displayName: 'Countries', icon: Icons.flag),
+  street(displayName: 'Streets', icon: Icons.signpost),
+  other(displayName: 'Suggestions', icon: Icons.search);
 
-  const AutoCompleteCategory({
-    required this.displayName,
-    required this.icon,
-  });
+  const AutoCompleteCategory({required this.displayName, required this.icon});
 
   final String displayName;
   final IconData icon;

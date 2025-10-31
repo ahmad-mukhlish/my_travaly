@@ -1,5 +1,5 @@
 import 'package:google_sign_in/google_sign_in.dart';
-import 'device_register.dart';
+import '../../data/models/device_register.dart';
 
 class LoginUser {
   const LoginUser({
