@@ -12,4 +12,12 @@ Coded by [Ahmad Mukhlis Saputra](https://www.linkedin.com/in/ahmad-mukhlish/)
 flutter run --dart-define-from-file=.env
 ```
 
+## Running Tests
+
+Execute the full test suite with:
+
+```bash
+flutter test
+```
+
 Refer to the [Flutter documentation](https://docs.flutter.dev/) for additional setup guidance.
