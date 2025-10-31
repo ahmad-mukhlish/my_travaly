@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart' show Firebase;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_travaly/firebase_options.dart';
-import 'package:my_travaly/src/config/environment_config.dart';
 import 'package:my_travaly/src/services/auth/auth_storage_service.dart';
 import 'package:my_travaly/src/services/network/api_service.dart';
 
@@ -26,18 +25,6 @@ void main() async {
     () => ApiService().init(),
     permanent: true,
   );
-
-  if (!EnvironmentConfig.hasAuthToken) {
-    debugPrint(
-      '⚠️ AUTH_TOKEN missing. Provide it via --dart-define=AUTH_TOKEN=your_token before building.',
-    );
-  }
-
-  if (!EnvironmentConfig.hasApiBaseUrl) {
-    debugPrint(
-      '⚠️ API_BASE_URL missing. Provide it via --dart-define=API_BASE_URL=https://example.com before building.',
-    );
-  }
 
   runApp(const MyApp());
 }

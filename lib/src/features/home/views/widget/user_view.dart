@@ -3,7 +3,6 @@ import 'package:my_travaly/src/features/login/model/login_model.dart';
 
 class UserView extends StatelessWidget {
   const UserView({super.key, required this.user});
-
   final LoginUser? user;
 
   @override

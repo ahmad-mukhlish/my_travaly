@@ -1,9 +1,8 @@
 import 'package:dio/dio.dart';
-
-import '../../../../config/environment_config.dart';
-import '../../../../services/network/api_service.dart';
-import '../models/property_model.dart';
-import '../models/search_auto_complete_result.dart';
+import 'package:my_travaly/src/config/environment_config.dart';
+import 'package:my_travaly/src/features/home/data/models/property_model.dart';
+import 'package:my_travaly/src/features/home/data/models/search_auto_complete_result.dart';
+import 'package:my_travaly/src/services/network/api_service.dart';
 
 class HomeRemoteDataSource {
   HomeRemoteDataSource({required ApiService apiService})

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:my_travaly/src/config/environment_config.dart';
 import 'package:my_travaly/src/features/login/data/repositories/login_repository.dart';
 import 'package:my_travaly/src/features/login/model/device_register.dart';
 import 'package:my_travaly/src/features/login/model/login_model.dart';
@@ -31,8 +32,7 @@ class LoginController extends GetxController {
   Future<void> initSignIn() async {
     if (!isInitialize) {
       await _googleSignIn.initialize(
-        serverClientId:
-        '888304855609-drd35dnact3jb0fhvqb018artc042on4.apps.googleusercontent.com',
+        serverClientId: EnvironmentConfig.googleServerClientId
       );
     }
     isInitialize = true;

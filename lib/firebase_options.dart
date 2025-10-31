@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:my_travaly/src/config/environment_config.dart';
 
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
@@ -28,52 +29,52 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDd_6ndPNAF2IHrksmPxZ5jj2A-sEVruYU',
-    appId: '1:888304855609:web:f3bb959ea6b09477fdbbe8',
-    messagingSenderId: '888304855609',
-    projectId: 'my-travaly-ahmad-5dcb9',
-    authDomain: 'my-travaly-ahmad-5dcb9.firebaseapp.com',
-    storageBucket: 'my-travaly-ahmad-5dcb9.firebasestorage.app',
-    measurementId: 'G-JBSZRM525B',
+    apiKey: EnvironmentConfig.firebaseWebApiKey,
+    appId: EnvironmentConfig.firebaseWebAppId,
+    messagingSenderId: EnvironmentConfig.firebaseWebMessagingSenderId,
+    projectId: EnvironmentConfig.firebaseWebProjectId,
+    authDomain: EnvironmentConfig.firebaseWebAuthDomain,
+    storageBucket: EnvironmentConfig.firebaseWebStorageBucket,
+    measurementId: EnvironmentConfig.firebaseWebMeasurementId,
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAy5g1xZIe15M6fP26iMLbb3imLJE-4Gng',
-    appId: '1:888304855609:android:3a0b26bb2782a154fdbbe8',
-    messagingSenderId: '888304855609',
-    projectId: 'my-travaly-ahmad-5dcb9',
-    storageBucket: 'my-travaly-ahmad-5dcb9.firebasestorage.app',
+    apiKey: EnvironmentConfig.firebaseAndroidApiKey,
+    appId: EnvironmentConfig.firebaseAndroidAppId,
+    messagingSenderId: EnvironmentConfig.firebaseAndroidMessagingSenderId,
+    projectId: EnvironmentConfig.firebaseAndroidProjectId,
+    storageBucket: EnvironmentConfig.firebaseAndroidStorageBucket,
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyB7ycaQHjgyiqLuuOLUufwzpxa3qmmRF-0',
-    appId: '1:888304855609:ios:a75bdd943d853badfdbbe8',
-    messagingSenderId: '888304855609',
-    projectId: 'my-travaly-ahmad-5dcb9',
-    storageBucket: 'my-travaly-ahmad-5dcb9.firebasestorage.app',
-    androidClientId: '888304855609-djtgds29j2lj5li4h10n0dj54s6kih33.apps.googleusercontent.com',
-    iosClientId: '888304855609-ho1a188c0iutc8ti06mu4sk5d07938tq.apps.googleusercontent.com',
-    iosBundleId: 'com.test.my.travaly.mytravalyahmad',
+    apiKey: EnvironmentConfig.firebaseIosApiKey,
+    appId: EnvironmentConfig.firebaseIosAppId,
+    messagingSenderId: EnvironmentConfig.firebaseIosMessagingSenderId,
+    projectId: EnvironmentConfig.firebaseIosProjectId,
+    storageBucket: EnvironmentConfig.firebaseIosStorageBucket,
+    androidClientId: EnvironmentConfig.firebaseIosAndroidClientId,
+    iosClientId: EnvironmentConfig.firebaseIosClientId,
+    iosBundleId: EnvironmentConfig.firebaseIosBundleId,
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyB7ycaQHjgyiqLuuOLUufwzpxa3qmmRF-0',
-    appId: '1:888304855609:ios:50a66aca46c21849fdbbe8',
-    messagingSenderId: '888304855609',
-    projectId: 'my-travaly-ahmad-5dcb9',
-    storageBucket: 'my-travaly-ahmad-5dcb9.firebasestorage.app',
-    iosClientId: '888304855609-plcn4odcgv2stgkglgoreo0r50c6o6ot.apps.googleusercontent.com',
-    iosBundleId: 'com.test.my.travaly.myTravaly',
+    apiKey: EnvironmentConfig.firebaseMacosApiKey,
+    appId: EnvironmentConfig.firebaseMacosAppId,
+    messagingSenderId: EnvironmentConfig.firebaseMacosMessagingSenderId,
+    projectId: EnvironmentConfig.firebaseMacosProjectId,
+    storageBucket: EnvironmentConfig.firebaseMacosStorageBucket,
+    iosClientId: EnvironmentConfig.firebaseMacosClientId,
+    iosBundleId: EnvironmentConfig.firebaseMacosBundleId,
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyDd_6ndPNAF2IHrksmPxZ5jj2A-sEVruYU',
-    appId: '1:888304855609:web:83d4b3d052e9895bfdbbe8',
-    messagingSenderId: '888304855609',
-    projectId: 'my-travaly-ahmad-5dcb9',
-    authDomain: 'my-travaly-ahmad-5dcb9.firebaseapp.com',
-    storageBucket: 'my-travaly-ahmad-5dcb9.firebasestorage.app',
-    measurementId: 'G-VZ2HB3CCRK',
+    apiKey: EnvironmentConfig.firebaseWindowsApiKey,
+    appId: EnvironmentConfig.firebaseWindowsAppId,
+    messagingSenderId: EnvironmentConfig.firebaseWindowsMessagingSenderId,
+    projectId: EnvironmentConfig.firebaseWindowsProjectId,
+    authDomain: EnvironmentConfig.firebaseWindowsAuthDomain,
+    storageBucket: EnvironmentConfig.firebaseWindowsStorageBucket,
+    measurementId: EnvironmentConfig.firebaseWindowsMeasurementId,
   );
 
 }
