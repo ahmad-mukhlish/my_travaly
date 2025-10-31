@@ -14,7 +14,6 @@ class SearchResultsScreen extends GetView<SearchResultsController> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Search Result Page'),
-        automaticallyImplyLeading: false,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
