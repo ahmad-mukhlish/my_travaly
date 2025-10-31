@@ -1,16 +1,15 @@
 # my_travaly
 
 My Travaly Project Test App
+Coded by [Ahmad Mukhlis Saputra](https://www.linkedin.com/in/ahmad-mukhlish/)
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+1. Place your `.env` file at the root of the repository (`my_travaly/.env`).
+2. Run the app with your environment values loaded:
 
-A few resources to get you started if this is your first Flutter project:
+```bash
+flutter run --dart-define-from-file=.env
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Refer to the [Flutter documentation](https://docs.flutter.dev/) for additional setup guidance.
