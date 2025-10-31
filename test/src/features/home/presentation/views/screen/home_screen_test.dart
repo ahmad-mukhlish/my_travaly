@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
-import 'package:get/get_instance/src/lifecycle.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:my_travaly/src/enums/entity_type.dart';
 import 'package:my_travaly/src/features/home/controllers/home_controller.dart';
@@ -73,9 +72,9 @@ void main() {
           invocation.positionalArguments.first as EntityType;
     });
     when(() => homeController.onStart)
-        .thenReturn(InternalFinalCallback<void>());
+        .thenReturn(InternalFinalCallback<void>(callback: () {}));
     when(() => homeController.onDelete)
-        .thenReturn(InternalFinalCallback<void>());
+        .thenReturn(InternalFinalCallback<void>(callback: () {}));
     when(() => homeController.fetchPopularStay())
         .thenAnswer((_) async {});
     when(() => homeController.fetchPopularStay(
@@ -90,6 +89,10 @@ void main() {
         .thenReturn(autoCompleteError);
     when(() => searchBarController.isAutoCompleteLoading)
         .thenReturn(autoCompleteLoading);
+    when(() => searchBarController.onStart)
+        .thenReturn(InternalFinalCallback<void>(callback: () {}));
+    when(() => searchBarController.onDelete)
+        .thenReturn(InternalFinalCallback<void>(callback: () {}));
 
     addTearDown(() {
       searchController.dispose();

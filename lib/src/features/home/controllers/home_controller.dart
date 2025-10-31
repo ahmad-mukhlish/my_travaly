@@ -53,8 +53,9 @@ class HomeController extends GetxController {
     }
 
     final EntityType nextEntityType = entityType ?? selectedEntityType.value;
-    if (selectedEntityType.value != nextEntityType)
+    if (selectedEntityType.value != nextEntityType) {
       selectedEntityType.value = nextEntityType;
+    }
 
     isLoading.value = true;
     errorMessage.value = '';
