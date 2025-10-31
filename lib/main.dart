@@ -1,4 +1,3 @@
-import "package:chucker_flutter/chucker_flutter.dart";
 import 'package:firebase_core/firebase_core.dart' show Firebase;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -41,7 +40,6 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
         useMaterial3: true,
       ),
-      navigatorObservers: [ChuckerFlutter.navigatorObserver],
       initialBinding: LoginBinding(),
       initialRoute: AuthStorageService.to.initialPage,
       getPages: AppPages.routes,

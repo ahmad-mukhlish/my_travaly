@@ -1,4 +1,3 @@
-import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide Response;
 import 'package:my_travaly/src/config/environment_config.dart';
@@ -20,7 +19,6 @@ class ApiService extends GetxService {
   Dio get client => _dio;
 
   Future<ApiService> init() async {
-    _configureInterceptors();
     return this;
   }
 
@@ -94,9 +92,5 @@ class ApiService extends GetxService {
       options: options,
       cancelToken: cancelToken,
     );
-  }
-
-  void _configureInterceptors() {
-    _dio.interceptors.add(ChuckerDioInterceptor());
   }
 }

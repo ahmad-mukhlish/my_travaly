@@ -72,7 +72,7 @@ class SearchResultsScreen extends GetView<SearchResultsController> {
                       ),
                       noItemsFoundIndicatorBuilder: (_) => Center(
                         child: Text(
-                          'No properties found for "${controller.title}". Try refining your search.',
+                          'No properties found for "${controller.title}". \nTry refining your search.',
                           style: theme.textTheme.bodyMedium,
                           textAlign: TextAlign.center,
                         ),
