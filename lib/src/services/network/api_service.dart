@@ -26,15 +26,11 @@ class ApiService extends GetxService {
     String path = '',
     Map<String, dynamic>? queryParameters,
     Options? options,
-    CancelToken? cancelToken,
-    ProgressCallback? onReceiveProgress,
   }) {
     return _dio.get<T>(
       path,
       queryParameters: queryParameters,
       options: options,
-      cancelToken: cancelToken,
-      onReceiveProgress: onReceiveProgress,
     );
   }
 
@@ -43,18 +39,12 @@ class ApiService extends GetxService {
     Object? data,
     Map<String, dynamic>? queryParameters,
     Options? options,
-    CancelToken? cancelToken,
-    ProgressCallback? onSendProgress,
-    ProgressCallback? onReceiveProgress,
   }) {
     return _dio.post<T>(
       path,
       data: data,
       queryParameters: queryParameters,
       options: options,
-      cancelToken: cancelToken,
-      onSendProgress: onSendProgress,
-      onReceiveProgress: onReceiveProgress,
     );
   }
 
@@ -63,18 +53,12 @@ class ApiService extends GetxService {
     Object? data,
     Map<String, dynamic>? queryParameters,
     Options? options,
-    CancelToken? cancelToken,
-    ProgressCallback? onSendProgress,
-    ProgressCallback? onReceiveProgress,
   }) {
     return _dio.put<T>(
       path,
       data: data,
       queryParameters: queryParameters,
       options: options,
-      cancelToken: cancelToken,
-      onSendProgress: onSendProgress,
-      onReceiveProgress: onReceiveProgress,
     );
   }
 
@@ -83,14 +67,12 @@ class ApiService extends GetxService {
     Object? data,
     Map<String, dynamic>? queryParameters,
     Options? options,
-    CancelToken? cancelToken,
   }) {
     return _dio.delete<T>(
       path,
       data: data,
       queryParameters: queryParameters,
       options: options,
-      cancelToken: cancelToken,
     );
   }
 }
